@@ -61,6 +61,18 @@ services:
     networks:
       - laravel11_api
 
+  # Node.js Service for asset compilation
+  node:
+    image: node:20-alpine
+    container_name: laravel11_api_node
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - laravel11_api
+    tty: true
+    stdin_open: true
+
   # Composer Service
   composer:
     image: composer:latest
