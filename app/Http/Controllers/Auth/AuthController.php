@@ -20,7 +20,7 @@ class AuthController extends Controller
     /**
      * Handle a login request.
      */
-    public function login(Request $request)
+    public function loginSubmit(Request $request)
     {
         // Validate and authenticate the user...
         $credentials = $request->only('username', 'password');
