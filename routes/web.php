@@ -17,6 +17,16 @@ Route::controller(AuthController::class)->middleware('guest')->group(function ()
     Route::post('/login/submit', 'loginSubmit')->name('login.post');
 });
 
-Route::controller(HomeDashboard::class)->group(function () {
+Route::controller(HomeDashboard::class)->middleware('auth')->group(function () {
     Route::get('/home', 'index')->name('home');
+});
+
+
+Route::prefix('profile')->middleware('auth')->group(function () {
+    Route::get('/', function () {
+        return view('profile.index');
+    })->name('profile.index');
+    Route::get('/password-change', function () {
+        return view('profile.password_change');
+    })->name('profile.password.change');
 });
