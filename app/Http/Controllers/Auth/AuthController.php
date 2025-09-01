@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+// use Illuminate\Container\Attributes\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -24,6 +26,7 @@ class AuthController extends Controller
     {
         // Validate and authenticate the user...
         $credentials = $request->only('username', 'password');
+        // dd($request->username, $request->password);
         $request->validate([
             'username' => 'required|string',
             'password' => 'required|string',
@@ -31,15 +34,16 @@ class AuthController extends Controller
 
         $loginData = User::where('username', $credentials['username'])->first();
         if (!$loginData) {
-            return redirect()->back()->withErrors(['username' => 'Username does not exist.']);
+            Log::error("User not found: " . $credentials['username']);
+            return redirect()->back()->withErrors(['error' => 'Username does not exist.']);
         }
         if (!password_verify($credentials['password'], $loginData->password)) {
-            return redirect()->back()->withErrors(['password' => 'The provided password is incorrect.']);
+            return redirect()->back()->withErrors(['error' => 'The provided password is incorrect.']);
         }
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('dashboard');
+            return redirect()->route('home');
         }
 
         return back()->withErrors([
