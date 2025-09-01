@@ -11,7 +11,9 @@ class app extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct(
+        // public string $title,
+    )
     {
         //
     }
@@ -21,6 +23,6 @@ class app extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.app.app');
+        return view('components.layouts.app');
     }
 }
