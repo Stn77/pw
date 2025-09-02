@@ -158,13 +158,13 @@
             color: rgba(0, 0, 0, 0.85);
         }
     </style>
-    @stack('css')
+    @stack('style')
 </head>
 
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
     <div class="app-wrapper">
         <!-- Toggle Button untuk Mobile -->
-        <button class="sidebar-toggle {{$sidebarShow ? 'd-block' : 'd-none'}}" type="button">
+        <button class="sidebar-toggle" type="button">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
                 <line x1="3" y1="12" x2="21" y2="12"></line>
                 <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -173,7 +173,7 @@
         </button>
 
         <!-- Overlay untuk Mobile -->
-        <div class="sidebar-overlay {{$sidebarShow ? 'd-block' : 'd-none'}}"></div>
+        <div class="sidebar-overlay"></div>
 
         <!-- Sidebar -->
         <aside class="app-sidebar bg-body-secondary {{$sidebarShow ? 'd-block' : 'd-none'}}">

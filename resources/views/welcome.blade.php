@@ -1,5 +1,5 @@
 <x-layouts.app pageTitleName="" sidebarShow=''>
-    @push('css')
+    @push('style')
     <style>
         .welcome-main{
             min-height: 100vh;
