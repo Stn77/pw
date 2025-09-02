@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Jurusan;
+use App\Models\Kelas;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -23,5 +25,29 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('123'),
             'username' => 'admin',
         ]);
+
+        $jurusan = [
+            'mp',
+            'ak',
+            'bd',
+            'tsm',
+            'dkv',
+            'pplg',
+            'tkkr'
+        ];
+
+        $kelas = [
+            'X',
+            'XI',
+            'XII',
+        ];
+
+        foreach ($jurusan as $j) {
+            Jurusan::create(['name' => $j]);
+        }
+
+        foreach ($kelas as $k) {
+            Kelas::create(['name' => $k]);
+        }
     }
 }
