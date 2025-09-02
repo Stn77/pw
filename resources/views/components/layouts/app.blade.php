@@ -143,13 +143,17 @@
             transform: rotate(90deg);
         }
 
-        .btn-toggle-nav a {
+        .btn-toggle-nav a ,.logout{
             padding: 0.5rem 1.5rem;
             margin-top: 0.125rem;
             margin-left: 1.25rem;
             font-size: 0.875rem;
             color: rgba(0, 0, 0, 0.65);
             text-decoration: none;
+        }
+
+        .logout button{
+            width: 100%;
         }
 
         .btn-toggle-nav a:hover,
@@ -242,9 +246,9 @@
                                     <li><a href="#" class="py-1 rounded link-dark d-block">Profile</a></li>
                                     <li><a href="#" class="py-1 rounded link-dark d-block">Settings</a></li>
                                     <li>
-                                        <form method="POST" action="{{ route('logout') }}">
+                                        <form class="logout" method="POST" action="{{ route('logout') }}" style="width: max-content; ">
                                             @csrf
-                                            <button type="submit" id="logoutBtn" class="p-0 m-0 align-baseline btn btn-link">Logout</button>
+                                            <button type="submit" role="button" id="logoutBtn" class="p-0 m-0 align-baseline btn btn-link">Logout</button>
                                         </form>
                                     </li>
                                 </ul>
@@ -319,7 +323,7 @@
             });
 
             // Logout function
-            
+
         });
     </script>
     @stack('script')
