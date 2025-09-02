@@ -13,9 +13,9 @@ Route::get('/', function () {
 Route::controller(AuthController::class)->middleware('guest')->group(function () {
     Route::get('/register', 'showRegistrationForm')->name('register');
     Route::get('/login', 'showLoginForm')->name('login');
-    Route::post('/logout', 'logout')->name('logout');
     Route::post('/login/submit', 'loginSubmit')->name('login.post');
 });
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
 Route::controller(HomeDashboard::class)->middleware('auth')->group(function () {
     Route::get('/home', 'index')->name('home');
