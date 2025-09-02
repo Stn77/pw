@@ -9,7 +9,7 @@
     @stack('css')
 </head>
 <body>
-    <div class="container d-flex flex-column justify-content-center align-items-center " style="height: 100vh;">
+    <div class=" d-flex flex-column justify-content-center align-items-center " style="height: 100vh;">
         {{$slot}}
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
