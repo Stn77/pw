@@ -177,71 +177,76 @@
 
         <!-- Sidebar -->
         <aside class="app-sidebar bg-body-secondary {{$sidebarShow ? 'd-block' : 'd-none'}}">
-            <div class="d-flex flex-column flex-shrink-0 p-3 bg-white h-100">
+            <div class="flex-shrink-0 p-3 bg-white d-flex flex-column h-100">
                 <div class="sidebar-brand">
                     <a href="/" class="brand-link">
-                        <img src="{{ asset('img/Prima Pay.png') }}" alt="Logo" class="brand-image opacity-75" style="width: 150px;">
+                        <img src="{{ asset('img/Prima Pay.png') }}" alt="Logo" class="opacity-75 brand-image" style="width: 150px;">
                     </a>
                 </div>
                 <div class="sidebar-content">
-                    <ul class="nav nav-pills flex-column mb-auto">
+                    <ul class="mb-auto nav nav-pills flex-column">
                         <li class="nav-item">
-                            <button class="btn btn-toggle align-items-center rounded collapsed w-100 text-start"
+                            <button class="rounded btn btn-toggle align-items-center collapsed w-100 text-start"
                                 data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
                                 Home
                             </button>
                             <div class="collapse show" id="home-collapse">
-                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ms-3 nav-treewiew">
-                                    <li><a href="#" class="link-dark rounded d-block py-1">Overview</a></li>
-                                    <li><a href="#" class="link-dark rounded d-block py-1">Updates</a></li>
-                                    <li><a href="#" class="link-dark rounded d-block py-1">Reports</a></li>
+                                <ul class="pb-1 btn-toggle-nav list-unstyled fw-normal small ms-3 nav-treewiew">
+                                    <li><a href="#" class="py-1 rounded link-dark d-block">Overview</a></li>
+                                    <li><a href="#" class="py-1 rounded link-dark d-block">Updates</a></li>
+                                    <li><a href="#" class="py-1 rounded link-dark d-block">Reports</a></li>
                                 </ul>
                             </div>
                         </li>
 
                         <li>
-                            <button class="btn btn-toggle align-items-center rounded collapsed w-100 text-start"
+                            <button class="rounded btn btn-toggle align-items-center collapsed w-100 text-start"
                                 data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
                                 Dashboard
                             </button>
                             <div class="collapse" id="dashboard-collapse">
-                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ms-3 menu-open">
-                                    <li><a href="#" class="link-dark rounded d-block py-1">Overview</a></li>
-                                    <li><a href="#" class="link-dark rounded d-block py-1">Weekly</a></li>
-                                    <li><a href="#" class="link-dark rounded d-block py-1">Monthly</a></li>
-                                    <li><a href="#" class="link-dark rounded d-block py-1">Annually</a></li>
+                                <ul class="pb-1 btn-toggle-nav list-unstyled fw-normal small ms-3 menu-open">
+                                    <li><a href="#" class="py-1 rounded link-dark d-block">Overview</a></li>
+                                    <li><a href="#" class="py-1 rounded link-dark d-block">Weekly</a></li>
+                                    <li><a href="#" class="py-1 rounded link-dark d-block">Monthly</a></li>
+                                    <li><a href="#" class="py-1 rounded link-dark d-block">Annually</a></li>
                                 </ul>
                             </div>
                         </li>
 
                         <li>
-                            <button class="btn btn-toggle align-items-center rounded collapsed w-100 text-start"
+                            <button class="rounded btn btn-toggle align-items-center collapsed w-100 text-start"
                                 data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
                                 Orders
                             </button>
                             <div class="collapse" id="orders-collapse">
-                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ms-3">
-                                    <li><a href="#" class="link-dark rounded d-block py-1">New</a></li>
-                                    <li><a href="#" class="link-dark rounded d-block py-1">Processed</a></li>
-                                    <li><a href="#" class="link-dark rounded d-block py-1">Shipped</a></li>
-                                    <li><a href="#" class="link-dark rounded d-block py-1">Returned</a></li>
+                                <ul class="pb-1 btn-toggle-nav list-unstyled fw-normal small ms-3">
+                                    <li><a href="#" class="py-1 rounded link-dark d-block">New</a></li>
+                                    <li><a href="#" class="py-1 rounded link-dark d-block">Processed</a></li>
+                                    <li><a href="#" class="py-1 rounded link-dark d-block">Shipped</a></li>
+                                    <li><a href="#" class="py-1 rounded link-dark d-block">Returned</a></li>
                                 </ul>
                             </div>
                         </li>
 
-                        <li class="border-top my-3"></li>
+                        <li class="my-3 border-top"></li>
 
                         <li>
-                            <button class="btn btn-toggle align-items-center rounded collapsed w-100 text-start"
+                            <button class="rounded btn btn-toggle align-items-center collapsed w-100 text-start"
                                 data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
                                 Account
                             </button>
                             <div class="collapse" id="account-collapse">
-                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ms-3">
-                                    <li><a href="#" class="link-dark rounded d-block py-1">New...</a></li>
-                                    <li><a href="#" class="link-dark rounded d-block py-1">Profile</a></li>
-                                    <li><a href="#" class="link-dark rounded d-block py-1">Settings</a></li>
-                                    <li><a href="#" class="link-dark rounded d-block py-1">Sign out</a></li>
+                                <ul class="pb-1 btn-toggle-nav list-unstyled fw-normal small ms-3">
+                                    <li><a href="#" class="py-1 rounded link-dark d-block">New...</a></li>
+                                    <li><a href="#" class="py-1 rounded link-dark d-block">Profile</a></li>
+                                    <li><a href="#" class="py-1 rounded link-dark d-block">Settings</a></li>
+                                    <li>
+                                        <form method="POST" action="{{ route('logout') }}">
+                                            @csrf
+                                            <button type="submit" id="logoutBtn" class="p-0 m-0 align-baseline btn btn-link">Logout</button>
+                                        </form>
+                                    </li>
                                 </ul>
                             </div>
                         </li>
@@ -251,13 +256,13 @@
         </aside>
 
         <div class="app-main">
-            <div class="d-flex p-3 flex-column flex-grow-1">
+            <div class="p-3 d-flex flex-column flex-grow-1">
                 <div class="">
                     <div class="app-content-header">
                         <h1 style="color: #303030;" class="{{$pageTitleName ? 'd-block' :'d-none'}}">{{$pageTitleName ?? ''}}</h1>
                     </div>
                 </div>
-                <div class="app-content bg-white shadow-sm p-3 rounded">
+                <div class="p-3 bg-white rounded shadow-sm app-content">
                     {{$slot}}
                 </div>
             </div>
@@ -314,16 +319,7 @@
             });
 
             // Logout function
-            const logoutBtn = document.getElementById('logoutBtn');
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const logoutConfirmed = confirm('Apakah Anda yakin ingin logout?');
-                    if (logoutConfirmed) {
-                        window.location.href = "{{ route('logout') }}";
-                    }
-                });
-            }
+            
         });
     </script>
     @stack('script')
