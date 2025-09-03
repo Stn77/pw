@@ -184,7 +184,7 @@
             <div class="flex-shrink-0 p-3 bg-white d-flex flex-column h-100">
                 <div class="sidebar-brand">
                     <a href="/" class="brand-link">
-                        <img src="{{ asset('img/Prima Pay.png') }}" alt="Logo" class="opacity-75 brand-image" style="width: 150px;">
+                        <img src="{{ asset('img/Prima Score.png') }}" alt="Logo" class="opacity-75 brand-image" style="width: 150px;">
                     </a>
                 </div>
                 <div class="sidebar-content">
