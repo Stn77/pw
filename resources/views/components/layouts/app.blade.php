@@ -159,7 +159,20 @@
         .btn-toggle-nav a:hover,
         .btn-toggle-nav a:focus {
             background-color: #f8f9fa;
-            color: rgba(0, 0, 0, 0.85);
+            color: rgba(97, 97, 97, 0.85);
+        }
+
+        .crazy-nav{
+            font-weight: 500;
+        }
+        .crazy-nav:hover{
+            background-color: #f1f1f188;
+        }
+        .bg-active{
+            background-color: #d6d6d683;
+        }
+        .bg-active:hover{
+            background-color: #dadada
         }
     </style>
     @stack('style')
@@ -180,7 +193,7 @@
         <div class="sidebar-overlay"></div>
 
         <!-- Sidebar -->
-        <aside class="app-sidebar bg-body-secondary {{$sidebarShow ? 'd-block' : 'd-none'}}">
+        <aside class="app-sidebar bg-body-secondary {{$sidebarShow ?? 'd-block'}}">
             <div class="flex-shrink-0 p-3 bg-white d-flex flex-column h-100">
                 <div class="sidebar-brand">
                     <a href="/" class="brand-link">
@@ -189,7 +202,7 @@
                 </div>
                 <div class="sidebar-content">
                     <ul class="mb-auto nav nav-pills flex-column">
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <button class="rounded btn btn-toggle align-items-center collapsed w-100 text-start"
                                 data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
                                 Home
@@ -201,8 +214,28 @@
                                     <li><a href="#" class="py-1 rounded link-dark d-block">Reports</a></li>
                                 </ul>
                             </div>
-                        </li>
+                        </li> --}}
 
+
+                        @hasanyrole('admin')
+                        <li class="nav-item">
+                            <a class="rounded navbar navbar-light btn ps-3 link-dark align-items-center w-100 text-start crazy-nav {{Route::is('home') ? 'bg-active' : ''}}"
+                            href="{{route('home')}}">
+                                Dashboard
+                            </a>
+                        </li>
+                        @endhasanyrole
+
+                        @hasanyrole('admin|scanner')
+                        <li class="nav-item">
+                            <a class="rounded navbar navbar-light btn ps-3 link-dark align-items-center w-100 text-start crazy-nav {{Route::is('scanner') ? 'bg-active' : ''}}"
+                           href="{{route('scanner')}}">
+                                Scanner
+                            </a>
+                        </li>
+                        @endhasanyrole
+
+                        @hasanyrole('admin|teacher')
                         <li>
                             <button class="rounded btn btn-toggle align-items-center collapsed w-100 text-start"
                                 data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
@@ -210,28 +243,13 @@
                             </button>
                             <div class="collapse" id="dashboard-collapse">
                                 <ul class="pb-1 btn-toggle-nav list-unstyled fw-normal small ms-3 menu-open">
-                                    <li><a href="#" class="py-1 rounded link-dark d-block">Overview</a></li>
-                                    <li><a href="#" class="py-1 rounded link-dark d-block">Weekly</a></li>
-                                    <li><a href="#" class="py-1 rounded link-dark d-block">Monthly</a></li>
-                                    <li><a href="#" class="py-1 rounded link-dark d-block">Annually</a></li>
+                                    <li><a href="#" class="py-1 rounded link-dark d-block">Riwayat Absen</a></li>
+                                    <li><a href="#" class="py-1 rounded link-dark d-block">Daftar Siswa</a></li>
+                                    <li><a href="#" class="py-1 rounded link-dark d-block">Akun Siswa</a></li>
                                 </ul>
                             </div>
                         </li>
-
-                        <li>
-                            <button class="rounded btn btn-toggle align-items-center collapsed w-100 text-start"
-                                data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
-                                Orders
-                            </button>
-                            <div class="collapse" id="orders-collapse">
-                                <ul class="pb-1 btn-toggle-nav list-unstyled fw-normal small ms-3">
-                                    <li><a href="#" class="py-1 rounded link-dark d-block">New</a></li>
-                                    <li><a href="#" class="py-1 rounded link-dark d-block">Processed</a></li>
-                                    <li><a href="#" class="py-1 rounded link-dark d-block">Shipped</a></li>
-                                    <li><a href="#" class="py-1 rounded link-dark d-block">Returned</a></li>
-                                </ul>
-                            </div>
-                        </li>
+                        @endhasanyrole
 
                         <li class="my-3 border-top"></li>
 
@@ -248,7 +266,7 @@
                                     <li>
                                         <form class="logout" method="POST" action="{{ route('logout') }}" style="width: max-content; ">
                                             @csrf
-                                            <button type="submit" role="button" id="logoutBtn" class="p-0 m-0 align-baseline btn btn-link">Logout</button>
+                                            <button type="submit" role="button" id="logoutBtn" class="p-0 m-0 align-baseline btn btn-danger bg-transparent text-danger" style="border: none;">Logout</button>
                                         </form>
                                     </li>
                                 </ul>
@@ -263,7 +281,7 @@
             <div class="p-3 d-flex flex-column flex-grow-1">
                 <div class="">
                     <div class="app-content-header">
-                        <h1 style="color: #303030;" class="{{$pageTitleName ? 'd-block' :'d-none'}}">{{$pageTitleName ?? ''}}</h1>
+                        <h1 style="color: #303030;" class="{{$pageTitleName ?? 'd-block'}}">{{$pageTitleName ?? ''}}</h1>
                     </div>
                 </div>
                 <div class="p-3 bg-white rounded shadow-sm app-content">
