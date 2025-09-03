@@ -20,7 +20,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->n
 Route::controller(HomeDashboard::class)->middleware('auth')->group(function () {
     Route::get('/home', 'index')->name('home');
 });
-
+Route::get('/scanner', \App\Livewire\Scanner\Scanner::class)->middleware('auth')->name('scanner');
 
 Route::prefix('profile')->middleware('auth')->group(function () {
     Route::get('/', function () {
@@ -30,3 +30,4 @@ Route::prefix('profile')->middleware('auth')->group(function () {
         return view('profile.password_change');
     })->name('profile.password.change');
 });
+
