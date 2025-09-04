@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Siswa;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,12 +16,26 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
 
         $admin = Role::create(['name' => 'admin']);
         $user = Role::create(['name' => 'user']);
         $scanner = Role::create(['name' => 'scanner']);
         $teacher = Role::create(['name' => 'teacher']);
+
+        $permission = [
+            'scan',
+            'edit',
+            'delete',
+            'data access'
+        ];
+
+        foreach ($permission as $perm) {
+            Permission::create(['name' => $perm]);
+        }
+
+        $admin->givePermissionTo(Permission::all());
+        $scanner->givePermissionTo(['scan']);
+        $teacher->givePermissionTo(['edit', 'data access']);
 
         User::create([
             'name' => 'Scanner',
@@ -43,11 +58,11 @@ class UserSeeder extends Seeder
             'username' => 'admin',
         ])->assignRole($admin);
 
-        User::create([
-            'name' => 'Test User',
-            'email' => 'user@example.com',
-            'password' => bcrypt('123'),
-            'username' => 'user1'
-        ])->assignRole($user);
+        // User::create([
+        //     'name' => 'Test User',
+        //     'email' => 'user@example.com',
+        //     'password' => bcrypt('123'),
+        //     'username' => 'user1'
+        // ])->assignRole($user);
     }
 }

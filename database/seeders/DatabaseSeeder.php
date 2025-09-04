@@ -42,5 +42,9 @@ class DatabaseSeeder extends Seeder
         foreach ($kelas as $k) {
             Kelas::create(['name' => $k]);
         }
+
+        $this->call([
+            AccountSeeder::class,
+        ]);
     }
 }
