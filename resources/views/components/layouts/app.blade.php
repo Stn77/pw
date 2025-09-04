@@ -8,11 +8,11 @@
     <title>{{$title ?? config('app.name')}}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.css"> --}}
+    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css"> --}}
+    {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"> --}}
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"> --}}
+    {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"> --}}
     <style>
         /* Styling untuk sidebar responsif */
         .app-wrapper {
@@ -172,7 +172,13 @@
             background-color: #d6d6d683;
         }
         .bg-active:hover{
-            background-color: #dadada
+            background-color: #dadada;
+        }
+        .bg-tree-nav{
+            background-color: #d6d6d683;
+        }
+        .bg-tree-nav:hover{
+            background-color: #dadada;
         }
     </style>
     @stack('style')
@@ -235,17 +241,21 @@
                         </li>
                         @endhasanyrole
 
+                        @php
+                            $dataPage = Route::is('data.students', 'data.students.account', 'data.absen');
+                        @endphp
+
                         @hasanyrole('admin|teacher')
                         <li>
-                            <button class="rounded btn btn-toggle align-items-center collapsed w-100 text-start"
-                                data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
-                                Dashboard
+                            <button class="rounded btn btn-toggle align-items-center collapsed w-100 text-start {{$dataPage ? 'bg-active' : ''}}"
+                                data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="{{$dataPage ? 'false' : 'true'}}">
+                                Data
                             </button>
-                            <div class="collapse" id="dashboard-collapse">
+                            <div class="collapse {{$dataPage ? 'show' : ''}}" id="dashboard-collapse">
                                 <ul class="pb-1 btn-toggle-nav list-unstyled fw-normal small ms-3 menu-open">
-                                    <li><a href="#" class="py-1 rounded link-dark d-block">Riwayat Absen</a></li>
-                                    <li><a href="#" class="py-1 rounded link-dark d-block">Daftar Siswa</a></li>
-                                    <li><a href="#" class="py-1 rounded link-dark d-block">Akun Siswa</a></li>
+                                    <li><a href="{{route('data.absen')}}" class="py-1 rounded d-block">Riwayat Absen</a></li>
+                                    {{-- <li><a href="{{route('data.students')}}" class="py-1 rounded d-block">Daftar Siswa</a></li> --}}
+                                    <li><a href="{{route('data.students.account')}}" class="py-1 rounded d-block ">Akun Siswa</a></li>
                                 </ul>
                             </div>
                         </li>
