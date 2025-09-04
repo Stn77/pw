@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Dashboard\HomeDashboard;
+use App\Livewire\Dashboard\{AkunSiswa, DaftarSiswa, RiwayatAbsen};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -20,7 +21,9 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->n
 Route::controller(HomeDashboard::class)->middleware('auth')->group(function () {
     Route::get('/home', 'index')->name('home');
 });
-Route::get('/scanner', \App\Livewire\Scanner\Scanner::class)->middleware('auth')->name('scanner');
+
+Route::get('/scanner', \App\Livewire\Scanner\Scanner::class)->middleware('auth')->middleware('role:scanner|admin')->name('scanner');
+// Route::get('/scan', fn() => 'mbut')->middleware('auth')->middleware('role:scanner');
 
 Route::prefix('profile')->middleware('auth')->group(function () {
     Route::get('/', function () {
@@ -31,3 +34,9 @@ Route::prefix('profile')->middleware('auth')->group(function () {
     })->name('profile.password.change');
 });
 
+Route::prefix('data')->middleware('auth')->group(function(){
+    Route::get('/students', DaftarSiswa::class)->name('data.students');
+    // Route::get('/teachers', DaftarGuru::class)->name('data.teachers');
+    Route::get('/students/account', AkunSiswa::class)->name('data.students.account');
+    Route::get('/absen', RiwayatAbsen::class)->name('data.absen');
+});
