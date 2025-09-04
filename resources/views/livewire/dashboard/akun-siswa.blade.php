@@ -5,7 +5,7 @@
             <button class="btn btn-outline-danger my-2 my-sm-0 mx-2" type="submit">Reset</button>
         </div>
     </div>
-    <div class="d-flex my-2">
+    <div class="d-flex flex-column my-2 table-responsive">
         <table class="table">
             <thead>
                 <tr>
@@ -28,5 +28,7 @@
                 @endforeach
             </tbody>
         </table>
+        {{$studentAccounts->links()}}
+        {{-- <livewire:custom-pagination :data="$studentAccounts" :perpage="10"> --}}
     </div>
 </div>
