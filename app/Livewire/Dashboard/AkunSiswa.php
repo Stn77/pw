@@ -13,7 +13,7 @@ class AkunSiswa extends Component
     use WithPagination;
 
     public $search = '';
-    public $studentAccounts;
+    // public $studentAccounts;
 
     public function mount()
     {
@@ -22,8 +22,14 @@ class AkunSiswa extends Component
 
     public function render()
     {
-        // dd($this->studentAccounts);
-        $studentAccounts = $this->studentAccounts = User::role('user')->with('siswa')->get();
+        $query = User::role('user')->with('siswa');
+
+        if ($this->search) {
+            $query->where('name', 'like', '%' . $this->search . '%');
+        }
+
+        $studentAccounts = $query->paginate(2);
+
         return view('livewire.dashboard.akun-siswa', [
             'studentAccounts' => $studentAccounts
         ]);

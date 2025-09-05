@@ -15,6 +15,11 @@ class Scanner extends Component
         // $this->middleware('role:admin|scanner');
     }
 
+    public function checkScan()
+    {
+        $this->dispatchBrowserEvent('scan-detected', ['message' => 'QR Code terdeteksi!']);
+    }
+
     public function render()
     {
         return view('livewire.scanner.scanner');

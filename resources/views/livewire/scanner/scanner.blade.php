@@ -4,13 +4,20 @@
         video {
             transform: scaleX(-1);
         }
+        .render-container{
+            height: 600px;;
+            max-height: 600px;
+            padding: 0.5rem 0;
+        }
     </style>
     @endpush
 
-    <button id="btn-open">Buka Kamera</button>
-    <button id="btn-close" style="display:none;">Tutup Kamera</button>
+    <button id="btn-open" class="btn btn-success">Buka Kamera</button>
+    <button id="btn-close" class="btn btn-danger" style="display:none;">Tutup Kamera</button>
 
-    <div id="reader"></div>
+    <div class="render-container">
+        <div id="reader" class="" style="min-width: 500px; max-width: 750px; margin: auto;"></div>
+    </div>
 </div>
 
 @push('script')
@@ -22,7 +29,13 @@
   function onScanSuccess(decodedText, decodedResult) {
     alert(`QR Code terdeteksi: ${decodedText}`);
     console.log(`Code matched = ${decodedText}`, decodedResult);
+    let result = sendToLivewire(decodedText, decodedResult);
+    console.log(result)
   }
+
+//   function sendToLivewire(decodedText, decodedResult) {
+//     @this->call('checkScan', ${decodedText})
+//   }
 
   function onScanFailure(error) {
     // Abaikan error kecil

@@ -1,4 +1,4 @@
-<x-layouts.app pageTitleName="" sidebarShow=''>
+<x-layouts.app pageTitleName="">
     @push('style')
     <style>
         .welcome-main{
