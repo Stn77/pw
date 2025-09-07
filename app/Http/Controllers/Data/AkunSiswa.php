@@ -24,7 +24,8 @@ class AkunSiswa extends Controller
                 return strtoupper($row->siswa->jurusan->name);
             })
             ->addColumn('action', function($row) {
-                $btn = '<button class="btn btn-sm btn-primary">Edit</button>';
+                $btn = '<button class="btn mx-2 btn-sm btn-primary">Edit</button>';
+                $btn .= '<button class="btn mx-2 btn-sm btn-danger">Delete</button>';
                 return $btn;
             })
             ->make(true);

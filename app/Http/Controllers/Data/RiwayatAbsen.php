@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
+use App\Models\RiwayatAbsen as ModelsRiwayatAbsen;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -15,10 +16,24 @@ class RiwayatAbsen extends Controller
 
     public function getData()
     {
-        $data = []; // Ganti dengan logika pengambilan data riwayat absen dari database
+        $data = ModelsRiwayatAbsen::with('user.siswa')->take(10)->get();
+        // dd($data);
 
         return DataTables::of($data)
             ->addIndexColumn()
+            ->editColumn('action', function($row) {
+                if($row->is_late == 'Terlambat'){
+                    return '<span class="badge bg-danger">'.$row->is_late.'</span>';
+                } else {
+                    return '<span class="badge bg-success">'.$row->is_late.'</span>';
+                }
+            })
+            ->editColumn('user.siswa.name', function($row) {
+                if(!$row->user->siswa){
+                    return 'N/A';
+                }
+                return $row->user->siswa->name;
+            })
             ->make(true);
     }
 }

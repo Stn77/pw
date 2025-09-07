@@ -1,11 +1,4 @@
 <x-layouts.app title="Akun Siswa" pageTitleName="Akun Siswa" sidebarShow=true>
-    @push('script')
-    <style>
-        @media(max-width: 992px){
-
-        }
-    </style>
-    @endpush
     <div class="d-flex flex-column">
         {{-- <div class="d-flex w-full">
             <div class="form-inline d-flex">
@@ -24,6 +17,7 @@
         $(document).ready(() => {
             let akunSiswaTable = $('#akun-siswa').DataTable({
                 processing: true,
+                pageLength: 50,
                 serverSide: true,
                 autoFill: false,
                 ajax: {
