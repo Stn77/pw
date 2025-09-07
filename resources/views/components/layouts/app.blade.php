@@ -9,6 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.min.css">
     {{-- <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval' 'unsafe-inline' data: blob:;"> --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css">
@@ -243,7 +244,7 @@
                         @hasanyrole('admin|teacher')
                         <li>
                             <button class="rounded btn btn-toggle align-items-center collapsed w-100 text-start {{$dataPage ? 'bg-active' : ''}}"
-                                data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="{{$dataPage ? 'false' : 'true'}}">
+                                data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="{{$dataPage ? 'true' : 'false'}}">
                                 Data
                             </button>
                             <div class="collapse {{$dataPage ? 'show' : ''}}" id="dashboard-collapse">
@@ -263,11 +264,9 @@
                                 data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
                                 Account
                             </button>
-                            <div class="collapse" id="account-collapse">
+                            <div class="collapse {{Route::is('profile.index') ? 'show' : ''}}" id="account-collapse">
                                 <ul class="pb-1 btn-toggle-nav list-unstyled fw-normal small ms-3">
-                                    <li><a href="#" class="py-1 rounded link-dark d-block">New...</a></li>
-                                    <li><a href="#" class="py-1 rounded link-dark d-block">Profile</a></li>
-                                    <li><a href="#" class="py-1 rounded link-dark d-block">Settings</a></li>
+                                    <li><a href="{{route('profile.index')}}" class="py-1 rounded link-dark d-block">Profile</a></li>
                                     <li>
                                         <form class="logout" method="POST" action="{{ route('logout') }}" style="width: max-content; ">
                                             @csrf
