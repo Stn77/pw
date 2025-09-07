@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Dashboard\HomeDashboard;
-use App\Http\Controllers\Data\{AkunSiswa, RiwayatAbsen};
+use App\Http\Controllers\Data\{AkunSiswa, QrGenerator, RiwayatAbsen};
 use App\Http\Controllers\Scanner\{Scanner};
 use Illuminate\Support\Facades\Route;
 
@@ -37,8 +37,11 @@ Route::prefix('data')->middleware('auth')->group(function(){
     Route::get('/students/account', [AkunSiswa::class, 'index'])->name('data.students.account');
     Route::get('/absen', [RiwayatAbsen::class, 'index'])->name('data.absen');
 });
-Route::get('/scanner', [Scanner::class, 'index'])->name('scanner');
-Route::post('/scanner/scan', [Scanner::class, 'scan'])->name('scanner.scan');
+Route::middleware('auth')->group(function (){
+    Route::get('/scanner', [Scanner::class, 'index'])->name('scanner');
+    Route::post('/scanner/scan', [Scanner::class, 'scan'])->name('scanner.scan');
+    Route::get('/qrcode', [QrGenerator::class, 'generate'])->name('generate.qr');
+});
 
 Route::get('/students/get', [AkunSiswa::class, 'getData'])->name('akun.siswa.get');
 Route::get('/absen/get', [RiwayatAbsen::class, 'getData'])->name('data.absen.get');
