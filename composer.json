@@ -12,6 +12,7 @@
         "laravel/ui": "^4.6",
         "livewire/livewire": "^3.6",
         "simplesoftwareio/simple-qrcode": "^4.2",
+        "spatie/image": "^3.8",
         "spatie/laravel-permission": "^6.21",
         "yajra/laravel-datatables": "^11.0"
     },
