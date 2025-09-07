@@ -16,10 +16,10 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->date('tanggal');
             $table->string('hari');
-            $table->enum('status', ['Terlambat', 'Tepat Waktu'])->default('Tepat Waktu');
+            $table->enum('is_late', ['Terlambat', 'Tepat Waktu'])->default('Tepat Waktu');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            
+
         });
     }
 

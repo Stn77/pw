@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Jurusan;
 use App\Models\Kelas;
+use App\Models\RiwayatAbsen;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -46,5 +47,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AccountSeeder::class,
         ]);
+
+        RiwayatAbsen::factory()->count(50)->create();
     }
 }
