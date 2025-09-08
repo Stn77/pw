@@ -12,6 +12,8 @@ services:
     volumes:
       - ./:/var/www/html
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    ports:
+      - "6001:6001"
     networks:
       - laravel11_api
     depends_on:
