@@ -43,12 +43,28 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->route('home');
+            return $this->redirectRole();
         }
 
         return back()->withErrors([
             'password' => 'Server Error',
         ]);
+    }
+
+    public function redirectRole()
+    {
+        $authUser = Auth::user()->id;
+        $user = User::with('roles')->where('id', $authUser)->first();
+        if ($user->hasRole('admin')) {
+            // dd('youre a admin');
+            return redirect()->route('home');
+        } elseif ($user->hasRole('scanner')) {
+            // dd('youre a scanner');
+            return redirect()->route('scanner');
+        } else {
+            // dd('youre a user');
+            return redirect()->route('profile.index');
+        }
     }
 
     /**
