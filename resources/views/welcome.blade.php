@@ -1,4 +1,4 @@
-<x-layouts.app pageTitleName="">
+<x-layouts.auth pageTitleName="">
     @push('style')
     <style>
         .welcome-main{
@@ -16,4 +16,4 @@
             Login
         </a>
     </div>
-</x-layouts.app>
+</x-layouts.auth>
