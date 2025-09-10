@@ -1,7 +1,5 @@
 <x-layouts.app title="Dashboard" pageTitleName="Dashboard">
     @push('style')
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <style>
         video {
             /* transform: scaleX(-1); */
@@ -16,54 +14,46 @@
             width: max-content;
             height: max-content;
         }
-        .notification{
-            width: 100%;
-            height: max-content;
+
+        /* Style untuk notifikasi */
+        #notification-area {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            width: 350px;
+        }
+
+        .alert-auto-close {
             position: relative;
-            z-index: 5;
-            top: 1rem;
-            background-color: red;
+            overflow: hidden;
+        }
+
+        .alert-auto-close .progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: rgba(0,0,0,0.1);
+        }
+
+        .alert-auto-close .progress-bar {
+            transition: width 2s linear;
         }
     </style>
     @endpush
+
+    <!-- Area notifikasi -->
+    <div id="notification-area"></div>
+
     <div class="btn-c">
         <button id="btn-open" class="btn btn-success">Buka Kamera</button>
         <button id="btn-close" class="btn btn-danger" style="display:none;">Tutup Kamera</button>
-        <div class="">
-
-        </div>
     </div>
 
     <div class="render-container">
         <div id="reader" class="" style="min-width: 500px; max-width: 750px; margin: auto;"></div>
-    </div>
-
-    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-            <img src="..." class="rounded mr-2" alt="...">
-            <strong class="mr-auto">Bootstrap</strong>
-            <small class="text-muted">just now</small>
-            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="toast-body">
-            See? Just like this.
-        </div>
-    </div>
-
-    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-            <img src="..." class="rounded mr-2" alt="...">
-            <strong class="mr-auto">Bootstrap</strong>
-            <small class="text-muted">2 seconds ago</small>
-            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="toast-body">
-            Heads up, toasts will stack automatically
-        </div>
     </div>
 
     <div>Joss</div>
@@ -74,10 +64,53 @@
         let html5QrCode;
         let currentCameraId;
 
-        function onScanSuccess(decodedText, decodedResult) {
-            // alert(`QR Code terdeteksi: ${decodedText}`);
-            // alert(`Code matched = ${decodedText}`, decodedResult);
+        // Fungsi untuk menampilkan notifikasi
+        function showNotification(message, type = 'success') {
+            // Tentukan kelas alert berdasarkan type
+            let alertClass;
+            switch(type) {
+                case 'success':
+                    alertClass = 'alert-success';
+                    break;
+                case 'warning':
+                    alertClass = 'alert-warning';
+                    break;
+                case 'error':
+                    alertClass = 'alert-danger';
+                    break;
+                case 'info':
+                default:
+                    alertClass = 'alert-info';
+                    break;
+            }
 
+            // Buat elemen notifikasi
+            const notificationId = 'notif-' + Date.now();
+            const notification = $(
+                `<div id="${notificationId}" class="alert ${alertClass} alert-auto-close alert-dismissible fade show" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    ${message}
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 100%"></div>
+                    </div>
+                </div>`
+            );
+
+            // Tambahkan notifikasi ke area notifikasi
+            $('#notification-area').append(notification);
+
+            // Animasikan progress bar
+            setTimeout(function() {
+                notification.find('.progress-bar').css('width', '0%');
+            }, 10);
+
+            // Hilangkan notifikasi setelah 2 detik
+            setTimeout(function() {
+                $('#' + notificationId).alert('close');
+            }, 2000);
+        }
+
+        function onScanSuccess(decodedText, decodedResult) {
             try{
                 setTimeout(() => {
                     fetch('{{route('scanner.scan')}}', {
@@ -94,11 +127,26 @@
                     })
                     .then(response => response.json())
                     .then(data => {
-
+                        if(data.status === 200){
+                            // notifikasi tepat waktu
+                            showNotification('Absensi berhasil dicatat (Tepat waktu)', 'success');
+                        }else if (data.status === 201){
+                            // notifikasi terlambat
+                            showNotification('Absensi berhasil dicatat (Terlambat)', 'warning');
+                        }else if  (data.status === 400){
+                            // notifikasi sudah absen
+                            showNotification('Anda sudah melakukan absensi hari ini', 'info');
+                        }else{
+                            // error
+                            showNotification('Terjadi kesalahan: ' + (data.message || 'Unknown error'), 'error');
+                        }
                     })
-                }, 2000);
+                    .catch(error => {
+                        showNotification('Terjadi kesalahan jaringan: ' + error, 'error');
+                    });
+                },1000);
             } catch (error) {
-                alert(error)
+                showNotification('Terjadi kesalahan: ' + error, 'error');
             }
         }
 
@@ -126,6 +174,9 @@
                 document.getElementById("reader").style.display = "block";
                 document.getElementById("btn-open").style.display = "none";
                 document.getElementById("btn-close").style.display = "inline";
+            })
+            .catch(err => {
+                showNotification('Tidak dapat mengakses kamera: ' + err, 'error');
             });
 
         });
@@ -137,14 +188,10 @@
                 document.getElementById("btn-open").style.display = "inline";
                 document.getElementById("btn-close").style.display = "none";
             }).catch(err => {
-                console.error("Gagal menghentikan kamera:", err);
+                showNotification('Gagal menghentikan kamera: ' + err, 'error');
             });
             }
         });
     </script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.6/dist/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
     @endpush
-
 </x-layouts.app>
