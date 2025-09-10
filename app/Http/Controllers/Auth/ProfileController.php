@@ -14,9 +14,8 @@ class ProfileController extends Controller
         $data = []; // Fetch or prepare your data here
 
         $userId = Auth::user()->id;
-        $userData = User::with('siswa', 'siswa.kelas', 'siswa.jurusan')->where('id', 6)->first();
+        $userData = User::with('siswa', 'siswa.kelas', 'siswa.jurusan')->where('id', $userId)->first();
         $data = $userData;
-        // dd($userData);
         return view('profile.index', compact('data'));
     }
 }

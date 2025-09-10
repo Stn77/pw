@@ -11,22 +11,22 @@
 
                     <div class="form-group mb-3 col">
                         <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
-                        <input type="text" name="nama_lengkap" class="form-control" readonly>
+                        <input type="text" name="nama_lengkap" class="form-control" value="{{$data->siswa->name ?? '-'}}" readonly>
                     </div>
 
                     <div class="form-group mb-3 col">
                         <label for="username" class="form-label">Username</label>
-                        <input type="text" name="username" class="form-control" readonly>
+                        <input type="text" name="username" class="form-control" value="{{$data->username}}" readonly>
                     </div>
 
                     <div class="row">
                         <div class="form-group mb-3 col">
                             <label for="kelas" class="form-label">Kelas</label>
-                            <input type="text" name="kelas" class="form-control" readonly>
+                            <input type="text" name="kelas" class="form-control" value="{{$data->siswa->kelas->name ?? '-'}}" readonly>
                         </div>
                         <div class="form-group mb-3 col">
                             <label for="jurusan" class="form-label">Jurusan</label>
-                            <input type="text" name="jurusan" class="form-control" readonly>
+                            <input type="text" name="jurusan" class="form-control" value="{{$data->siswa->jurusan->name ?? '-'}}" readonly>
                         </div>
                     </div>
 
