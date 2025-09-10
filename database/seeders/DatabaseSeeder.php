@@ -48,6 +48,6 @@ class DatabaseSeeder extends Seeder
             AccountSeeder::class,
         ]);
 
-        RiwayatAbsen::factory()->count(50)->create();
+        // RiwayatAbsen::factory()->count(50)->create();
     }
 }

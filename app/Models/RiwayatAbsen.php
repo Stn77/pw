@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class RiwayatAbsen extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'tanggal', 'hari', 'status'];
+    protected $fillable = ['user_id', 'tanggal', 'hari', 'is_late'];
 
     public function user()
     {
