@@ -1,4 +1,4 @@
-<x-layouts.app title="Dashboard" pageTitleName="Dashboard">
+<x-layouts.app title="Scanner" pageTitleName="Scanner">
     @push('style')
     <style>
         video {
@@ -55,8 +55,6 @@
     <div class="render-container">
         <div id="reader" class="" style="min-width: 500px; max-width: 750px; margin: auto;"></div>
     </div>
-
-    <div>Joss</div>
 
     @push('script')
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
