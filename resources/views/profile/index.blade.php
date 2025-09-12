@@ -32,8 +32,9 @@
 
                     <div class="col">
                         <label for=""></label>
-                        <a href="{{route('generate.qr')}}" class="btn btn-lg btn-light">
-                            <i class="bi bi-qr-code"></i>
+                        <a href="{{route('generate.qr')}}" class="btn btn-md btn-light d-flex justify-content-around px-4" style="max-width: max-content;">
+                            My Qr Code
+                            <i class="bi bi-qr-code" style="margin-left: 0.5rem;"></i>
                         </a>
                     </div>
                 </div>
