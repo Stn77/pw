@@ -1,4 +1,10 @@
 <x-layouts.app title="Akun Siswa" pageTitleName="Akun Siswa" sidebarShow=true>
+    @push('style')
+    <style>
+
+
+    </style>
+    @endpush
     <div class="d-flex flex-column">
         {{-- <div class="d-flex w-full">
             <div class="form-inline d-flex">
@@ -8,7 +14,7 @@
         </div> --}}
 
         <table class="table mt-2 table-striped table-bordered" id="akun-siswa">
-            <thead class="text-light table-dark mt-2" style="background-color: rgb(32, 32, 32);"></thead>
+            <thead class="text-light table-dark mt-2" style="background-color: #2563EB;"></thead>
         </table>
     </div>
 
@@ -39,7 +45,7 @@
                     {data: 'siswa.name', title: 'Nama Siswa'},
                     {data: 'siswa.kelas.name', title: 'kelas'},
                     {data: 'siswa.jurusan.name', title: 'jurusan'},
-                    {data: 'action', title: 'Action', orderable: false, searchable: false}
+                    // {data: 'action', title: 'Action', orderable: false, searchable: false}
                 ]
             })
         })
