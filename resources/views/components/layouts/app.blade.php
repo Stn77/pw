@@ -92,13 +92,29 @@
                 overflow: hidden;
             }
         }
+        .btn-toggle[aria-expanded="true"] {
+            color: rgba(0, 0, 0, 0.85);
+            z-index: 10;
+        }
+
+        .btn-toggle[aria-expanded="true"]::after {
+            transform: rotate(90deg);
+        }
 
         /* Sidebar styling */
+        .app-sidebar {
+            min-height: 100vh;
+            width: 280px;
+            transition: all 0.3s;
+            z-index: 1000;
+            background-color: #ffffff; /* sidebar putih biar clean */
+            border-right: 1px solid #e2e8f0; /* garis halus */
+        }
+
         .sidebar-brand {
-            padding: 0.5rem 0 1rem 0 ;
-            /* padding-bottom: 0.5rem; */
+            padding: 1rem;
             text-align: center;
-            border-bottom: 1px solid #dee2e6;
+            border-bottom: 1px solid #e2e8f0;
         }
 
         .sidebar-content {
@@ -107,15 +123,33 @@
             padding: 0 0 1rem 0;
         }
 
-        .nav-pills .nav-link {
-            border-radius: 0;
-            padding: 0.75rem 1rem;
+        /* Menu utama */
+        .crazy-nav {
+            font-weight: 500;
+            color: #1E293B; /* teks abu gelap */
+            transition: background-color 0.2s, color 0.2s;
         }
 
+        .crazy-nav:hover {
+            background-color: #f1f5f9; /* hover abu muda */
+            color: #2563EB; /* teks biru saat hover */
+        }
+
+        .bg-active {
+            background-color: #2563EB !important; /* biru aktif */
+            color: #ffffff !important;
+        }
+
+        .bg-active:hover {
+            background-color: #1D4ED8 !important; /* biru lebih gelap */
+            color: #ffffff !important;
+        }
+
+        /* Submenu */
         .btn-toggle {
             padding: 0.75rem 1rem;
             font-weight: 600;
-            color: rgba(0, 0, 0, 0.65);
+            color: #475569; /* abu medium */
             background-color: transparent;
             border: 0;
             width: 100%;
@@ -124,63 +158,48 @@
 
         .btn-toggle:hover,
         .btn-toggle:focus {
-            color: rgba(0, 0, 0, 0.85);
-            background-color: #f8f9fa;
-        }
-
-        .btn-toggle::after {
-            width: 1.25em;
-            line-height: 0;
-            content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
-            transition: transform 0.35s ease;
-            transform-origin: 0.5em 50%;
-            float: right;
+            color: #2563EB;
+            background-color: #f8fafc;
         }
 
         .btn-toggle[aria-expanded="true"] {
-            color: rgba(0, 0, 0, 0.85);
+            color: #2563EB;
+            background-color: #f1f5f9;
         }
 
-        .btn-toggle[aria-expanded="true"]::after {
-            transform: rotate(90deg);
-        }
-
-        .btn-toggle-nav a ,.logout{
+        .btn-toggle-nav a, .btn-toggle-nav .logout {
             padding: 0.5rem 1.5rem;
             margin-top: 0.125rem;
             margin-left: 1.25rem;
             font-size: 0.875rem;
-            color: rgba(0, 0, 0, 0.65);
+            color: #475569;
             text-decoration: none;
+            border-radius: 6px;
+            transition: background-color 0.2s, color 0.2s;
         }
 
-        .logout button{
-            width: 100%;
+        .btn-toggle-nav a:hover {
+            background-color: #f1f5f9;
+            color: #2563EB;
         }
 
-        .btn-toggle-nav a:hover,
-        .btn-toggle-nav a:focus {
-            background-color: #f8f9fa;
-            color: rgba(97, 97, 97, 0.85);
+        .sub-nav-active {
+            background-color: #10B981 !important; /* hijau aktif */
+            color: #ffffff !important;
+            border-radius: 5px;
+        }
+        .logout button:hover {
+            background-color: #fee2e2; /* merah muda lembut */
+            color: #b91c1c;
         }
 
-        .crazy-nav{
-            font-weight: 500;
+        /* table styling */
+        .dataTables_filter {
+            margin-bottom: 15px;
         }
-        .crazy-nav:hover{
-            background-color: #f1f1f188;
-        }
-        .bg-active{
-            background-color: #d6d6d683;
-        }
-        .bg-active:hover{
-            background-color: #dadada;
-        }
-        .bg-tree-nav{
-            background-color: #d6d6d683;
-        }
-        .bg-tree-nav:hover{
-            background-color: #dadada;
+        #akun-siswa thead tr th{
+            background-color: #2563EB;
+            border: #2563EB;
         }
     </style>
     @stack('style')
@@ -249,9 +268,8 @@
                             </button>
                             <div class="collapse {{$dataPage ? 'show' : ''}}" id="dashboard-collapse">
                                 <ul class="pb-1 btn-toggle-nav list-unstyled fw-normal small ms-3 menu-open">
-                                    <li><a href="{{route('data.absen')}}" class="py-1 rounded d-block">Riwayat Absen</a></li>
-                                    {{-- <li><a href="{{route('data.students')}}" class="py-1 rounded d-block">Daftar Siswa</a></li> --}}
-                                    <li><a href="{{route('data.students.account')}}" class="py-1 rounded d-block ">Akun Siswa</a></li>
+                                    <li class=" {{Route::is('data.absen') ? 'sub-nav-active' : ''}}"><a href="{{route('data.absen')}}" class="py-1 rounded d-block {{Route::is('data.absen') ? 'sub-nav-active' : ''}}">Riwayat Absen</a></li>
+                                    <li class=" {{Route::is('data.students.account') ? 'sub-nav-active' : ''}}"><a href="{{route('data.students.account')}}" class="py-1 rounded d-block {{Route::is('data.students.account') ? 'sub-nav-active' : ''}}">Akun Siswa</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -259,19 +277,20 @@
 
                         <li class="my-3 border-top"></li>
 
+                        @php
+                            $profilePage = Route::is('profile.index');
+                        @endphp
+
                         <li>
-                            <button class="rounded btn btn-toggle align-items-center collapsed w-100 text-start"
+                            <button class="rounded btn btn-toggle align-items-center collapsed w-100 text-start {{$profilePage ? 'bg-active' : ''}}"
                                 data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
                                 Account
                             </button>
                             <div class="collapse {{Route::is('profile.index') ? 'show' : ''}}" id="account-collapse">
                                 <ul class="pb-1 btn-toggle-nav list-unstyled fw-normal small ms-3">
-                                    <li><a href="{{route('profile.index')}}" class="py-1 rounded link-dark d-block">Profile</a></li>
-                                    <li>
-                                        <form class="logout" method="POST" action="{{ route('logout') }}" style="width: max-content; ">
-                                            @csrf
-                                            <button type="submit" role="button" id="logoutBtn" class="p-0 m-0 align-baseline btn btn-danger bg-transparent text-danger" style="border: none;">Logout</button>
-                                        </form>
+                                    <li class=" {{Route::is('profile.index') ? 'sub-nav-active' : ''}}"><a href="{{route('profile.index')}}" class="py-1 rounded link-dark d-block {{Route::is('profile.index') ? 'sub-nav-active' : ''}}">Profile</a></li>
+                                    <li class="btn-toggle-nav logout">
+                                        <button class="btn btn-outline-danger mt-1" id="logout">Logout</button>
                                     </li>
                                 </ul>
                             </div>
@@ -294,10 +313,10 @@
                         </svg>
                     </button>
                     <div class="app-content-header">
-                        <h1 style="color: #303030;" class="{{$pageTitleName ?? 'd-block'}}">{{$pageTitleName ?? ''}}</h1>
+                        <h2 style="color: #303030;" class="{{$pageTitleName ?? 'd-block'}}">{{$pageTitleName ?? ''}}</h2>
                     </div>
                 </div>
-                <div class="p-3 bg-white rounded shadow-sm app-content">
+                <div class="p-3 rounded shadow-sm app-content">
                     {{$slot}}
                 </div>
             </div>
@@ -355,6 +374,27 @@
 
             // Logout function
 
+        });
+    </script>
+    <script>
+        $('#logout').on('click', () => {
+            const logoutConfirm = confirm('Apakah ingin Logout?')
+            if(logoutConfirm){
+                $.ajax({
+                    type: 'POST',
+                    url: '{{route('logout')}}',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function (response) {
+                        window.location.href = "{{route('login')}}"
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        // This function is executed if the request fails
+                        console.error("Error:", textStatus, errorThrown);
+                    }
+                });
+            }
         });
     </script>
     @stack('script')
