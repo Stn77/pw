@@ -21,18 +21,24 @@ class RiwayatAbsen extends Controller
 
         return DataTables::of($data)
             ->addIndexColumn()
-            ->editColumn('action', function($row) {
-                if($row->is_late == 'Terlambat'){
-                    return '<span class="badge bg-danger">'.$row->is_late.'</span>';
-                } else {
-                    return '<span class="badge bg-success">'.$row->is_late.'</span>';
-                }
-            })
             ->editColumn('user.siswa.name', function($row) {
                 if(!$row->user->siswa){
                     return 'N/A';
                 }
                 return $row->user->siswa->name;
+            })
+            ->addColumn('action', function($row) {
+                if($row->is_late === 'Terlambat'){
+                    return '<span class="badge bg-danger">'.$row->is_late.'</span>';
+                } else {
+                    return '<span class="badge bg-success">'.$row->is_late.'</span>';
+                }
+            })
+            ->editColumn('created_at', function($row) {
+                return $row->created_at->format('d M Y');
+            })
+            ->addColumn('waktu', function($row) {
+                return $row->created_at->format('H:i:s');
             })
             ->make(true);
     }
