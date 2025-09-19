@@ -27,7 +27,7 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'username' => fake()->unique()->userName(),
-            'email' => fake()->unique()->safeEmail(),
+            'email' => null,
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('123'),
             'remember_token' => Str::random(10),
@@ -44,6 +44,9 @@ class UserFactory extends Factory
         ]);
     }
 
+    /**
+     * Indicate that the model's role should be.
+     */
     public function admin()
     {
         return $this->afterCreating(function (User $user) {
@@ -63,5 +66,22 @@ class UserFactory extends Factory
         return $this->afterCreating(function (User $user) {
             $user->assignRole('user');
         });
+    }
+
+    /**
+     * Indicate that the model's email address should be true.
+     */
+    public function withEmail(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'email' => fake()->unique()->safeEmail(),
+        ]);
+    }
+
+    public function withoutEmail(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'email' => null,
+        ]);
     }
 }
