@@ -5,11 +5,14 @@ use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Dashboard\HomeDashboard;
 use App\Http\Controllers\Data\{AkunSiswa, QrGenerator, RiwayatAbsen};
 use App\Http\Controllers\Scanner\{Scanner};
+use App\Http\Controllers\TestAlgorithm;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/test', [TestAlgorithm::class, 'index'])->name('test.algorithm');
 
 Route::controller(AuthController::class)->middleware('guest')->group(function () {
     Route::get('/register', 'showRegistrationForm')->name('register');
