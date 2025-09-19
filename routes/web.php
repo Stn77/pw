@@ -42,6 +42,8 @@ Route::middleware('auth')->group(function (){
     Route::get('/qrcode', [QrGenerator::class, 'generate'])->name('generate.qr');
 });
 
+Route::post('/students/store', [AkunSiswa::class, 'store'])->name('akun.siswa.store');
+
 Route::get('/students/get', [AkunSiswa::class, 'getData'])->name('akun.siswa.get');
 Route::get('/absen/get', [RiwayatAbsen::class, 'getData'])->name('data.absen.get');
 // Route::post('');

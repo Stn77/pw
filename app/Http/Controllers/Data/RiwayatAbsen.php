@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
 use App\Models\RiwayatAbsen as ModelsRiwayatAbsen;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
 
 class RiwayatAbsen extends Controller
@@ -16,8 +18,13 @@ class RiwayatAbsen extends Controller
 
     public function getData()
     {
-        $data = ModelsRiwayatAbsen::with('user.siswa')->take(10)->get();
-        // dd($data);
+        $teacherRole = Auth::user()->hasRole('teacher');
+        if($teacherRole){
+            $teacherData = User::where('id', Auth::user()->id)->with('');
+        }
+        // dd($teacherData);
+
+        $data = ModelsRiwayatAbsen::with('user.siswa', 'user.siswa.kelas', 'user.siswa.jurusan')->get();
 
         return DataTables::of($data)
             ->addIndexColumn()
@@ -39,6 +46,9 @@ class RiwayatAbsen extends Controller
             })
             ->addColumn('waktu', function($row) {
                 return $row->created_at->format('H:i:s');
+            })
+            ->editColumn('user.siswa.jurusan.name', function($row){
+                return strtoupper($row->user->siswa->jurusan->name) ;
             })
             ->make(true);
     }
