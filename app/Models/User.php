@@ -20,7 +20,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'email',
+        // 'email',
         'password',
         'username'
     ];
@@ -57,7 +57,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(RiwayatAbsen::class);
     }
-    
+
     public function guru()
     {
         return $this->hasOne(Guru::class);
