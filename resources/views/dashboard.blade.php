@@ -71,7 +71,7 @@
                 margin: 0.4rem;
             }
             .welcome-admin{
-                
+
             }
         }
     </style>
@@ -90,8 +90,8 @@
         <div class="bottom-head w-100">
             <div class="mini-nav">
                 <div class="d-flex flex-row">
-                    <a href="" class="data-l h6"><p>Daftar Siswa</p> <i class="bi bi-box-arrow-up-right"></i></a>
-                    <a href="" class="data-l h6"><p>Data Absen</p> <i class="bi bi-box-arrow-up-right"></i></a>
+                    <a href="{{route('data.students.account')}}" class="data-l h6"><p>Daftar Siswa</p> <i class="bi bi-box-arrow-up-right"></i></a>
+                    <a href="{{route('data.absen')}}" class="data-l h6"><p>Data Absen</p> <i class="bi bi-box-arrow-up-right"></i></a>
                 </div>
             </div>
         </div>

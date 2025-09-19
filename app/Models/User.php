@@ -57,5 +57,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(RiwayatAbsen::class);
     }
-
+    
+    public function guru()
+    {
+        return $this->hasOne(Guru::class);
+    }
 }
