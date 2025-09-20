@@ -3,7 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Dashboard\HomeDashboard;
-use App\Http\Controllers\Data\{AkunSiswa, QrGenerator, RiwayatAbsen};
+use App\Http\Controllers\Data\{AkunSiswa, Guru, QrGenerator, RiwayatAbsen};
 use App\Http\Controllers\Scanner\{Scanner};
 use App\Http\Controllers\TestAlgorithm;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +39,15 @@ Route::prefix('data')->middleware('auth')->group(function(){
     Route::get('/students/account', [AkunSiswa::class, 'index'])->name('data.students.account');
     Route::get('/absen', [RiwayatAbsen::class, 'index'])->name('data.absen');
 });
+
+Route::prefix('data/guru')->middleware(['auth', 'role:admin'])->group(function(){
+    Route::get('/', [Guru::class, 'index'])->name('data.guru.index');
+    Route::get('/create', [Guru::class, 'create'])->name('data.guru.create');
+    Route::get('/edit/{id}', [Guru::class, 'edit'])->name('data.guru.edit');
+    Route::post('/store', [Guru::class, 'store'])->name('data.guru.store');
+    Route::get('/get', [Guru::class, 'getData'])->name('data.guru.get');
+});
+
 Route::middleware('auth')->group(function (){
     Route::get('/scanner', [Scanner::class, 'index'])->name('scanner');
     Route::post('/scanner/scan', [Scanner::class, 'scan'])->name('scanner.scan');
