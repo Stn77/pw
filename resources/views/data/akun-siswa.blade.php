@@ -178,13 +178,14 @@
                             // Tutup modal
 
                             // Tampilkan pesan sukses (bisa menggunakan toast/alert)
-                            alert('Data berhasil ditambahkan!');
+                            // alert('Data berhasil ditambahkan!');
 
+                            showNotifCreate('Data Siswa berhasil Dibuat', 'success')
                             $('#addmodal').modal('hide');
                             // Refresh tabel
                             akunSiswaTable.ajax.reload();
                         } else {
-                            alert('Terjadi kesalahan: ' + response.message);
+                            showNotifCreate(response.message, 'alert')
                         }
                     },
                     error: function(xhr) {

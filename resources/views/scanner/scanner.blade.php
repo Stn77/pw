@@ -15,37 +15,11 @@
             height: max-content;
         }
 
-        /* Style untuk notifikasi */
-        #notification-area {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9999;
-            width: 350px;
-        }
-
-        .alert-auto-close {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .alert-auto-close .progress {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: rgba(0,0,0,0.1);
-        }
-
-        .alert-auto-close .progress-bar {
-            transition: width 2s linear;
-        }
     </style>
     @endpush
 
     <!-- Area notifikasi -->
-    <div id="notification-area"></div>
+    {{-- <div id="notification-area"></div> --}}
 
     <div class="btn-c">
         <button id="btn-open" class="btn btn-success">Buka Kamera</button>
