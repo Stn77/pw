@@ -286,21 +286,22 @@
                         @endhasanyrole
 
                         @php
-                            $dataPage = Route::is('data.students', 'data.students.account', 'data.absen', 'data.guru.index');
+                            $dataPage = Route::is('data.students', 'data.students.account', 'data.absen');
+                            $dataGuru = Route::is('data.guru.index', 'data.guru.edit')
                         @endphp
 
                         <li>
-                            <button class="rounded btn btn-toggle align-items-center collapsed w-100 text-start {{$dataPage ? 'bg-active' : ''}}"
-                            data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="{{$dataPage ? 'true' : 'false'}}">
+                            <button class="rounded btn btn-toggle align-items-center collapsed w-100 text-start {{$dataPage || $dataGuru ? 'bg-active' : ''}}"
+                            data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="{{$dataPage || $dataGuru ? 'true' : 'false'}}">
                             Data
                             </button>
-                            <div class="collapse {{$dataPage ? 'show' : ''}}" id="dashboard-collapse">
+                            <div class="collapse {{$dataPage || $dataGuru ? 'show' : ''}}" id="dashboard-collapse">
                                 <ul class="pb-1 btn-toggle-nav list-unstyled fw-normal small ms-3 menu-open">
                                     @hasanyrole('admin|teacher')
                                     <li class=" {{Route::is('data.absen') ? 'sub-nav-active' : ''}}"><a href="{{route('data.absen')}}" class="py-1 rounded d-block {{Route::is('data.absen') ? 'sub-nav-active' : ''}}">Riwayat Absen</a></li>
                                     <li class=" {{Route::is('data.students.account') ? 'sub-nav-active' : ''}}"><a href="{{route('data.students.account')}}" class="py-1 rounded d-block {{Route::is('data.students.account') ? 'sub-nav-active' : ''}}">Akun Siswa</a></li>
                                     @endhasanyrole
-                                    <li class=" {{Route::is('data.guru.index') ? 'sub-nav-active' : ''}}"><a href="{{route('data.guru.index')}}" class="py-1 rounded d-block {{Route::is('data.guru.index') ? 'sub-nav-active' : ''}}">Akun Guru</a></li>
+                                    <li class=" {{$dataGuru ? 'sub-nav-active' : ''}}"><a href="{{route('data.guru.index')}}" class="py-1 rounded d-block {{$dataGuru ? 'sub-nav-active' : ''}}">Akun Guru</a></li>
                                 </ul>
                             </div>
                         </li>

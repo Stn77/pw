@@ -1,4 +1,7 @@
 <x-layouts.app title="Data Guru" pageTitleName="Data Guru" sidebarShow=true>
+    @push('style')
+
+    @endpush
     <div class="d-flex flex-column container-fluid" >
         <div class="d-flex mb-4">
             <div class="filter d-flex form-group flex-row">
@@ -36,15 +39,30 @@
                     <i class="bi bi-plus"></i> Tambah Data
                 </button>
             </div>
-
-            <table class="table mt-2 table-striped table-bordered" id="data-guru">
-                <thead class="text-light table-dark mt-2"></thead>
-                <tbody>
-                    <!-- Data akan diisi oleh DataTables -->
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table mt-2 table-striped table-bordered" id="data-guru">
+                    <thead class="text-light table-dark mt-2"></thead>
+                    <tbody>
+                        <!-- Data akan diisi oleh DataTables -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
+
+    {{-- modal --}}
+    <div class="modal fade" id="infoGuruModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     @push('script')
     <script>
         $(document).ready(() => {
@@ -75,12 +93,16 @@
                         orderable: false,
                         searchable: false,
                         render: function(data, type, row) {
+                            // let id = ri;
                             return `
                                 <div class="btn-group">
-                                    <button class="btn btn-sm btn-warning info-btn" data-id="${row.id}">
+                                    <a href="{{route('data.guru.edit', '')}}/ ${row.id}" class="btn btn-sm btn-primary info-btn mx-2" data-id="${row.id}">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <button class="btn btn-sm btn-warning info-btn mx-2" onclick="infoGuru(${row.id})" data-id="${row.id}">
                                         <i class="bi bi-info"></i>
                                     </button>
-                                    <button class="btn btn-sm btn-danger delete-btn" data-id="${row.id}">
+                                    <button class="btn btn-sm btn-danger delete-btn mx-2" data-id="${row.id}">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </div>
@@ -90,8 +112,18 @@
                 ]
             })
 
-            
         })
+
+        function infoGuru(id){
+            $('#infoGuruModal').modal('show')
+            $('#modalTitle').text('Informasi Guru')
+
+
+        }
+
+        function editGuru(id){
+
+        }
     </script>
     @endpush
 </x-layouts.app>

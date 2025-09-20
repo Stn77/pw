@@ -32,6 +32,6 @@ class Guru extends Controller
 
     public function edit($id)
     {
-        return view('data.guru.edit', compact('id'));
+        return view('data.guru-edit', compact('id'));
     }
 }
