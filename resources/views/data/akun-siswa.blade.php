@@ -14,16 +14,7 @@
             </div>
 
             <table class="table mt-2 table-striped table-bordered" id="akun-siswa">
-                <thead class="text-light table-dark mt-2">
-                    <tr>
-                        <th>No</th>
-                        <th>Username</th>
-                        <th>Nama Siswa</th>
-                        <th>Kelas</th>
-                        <th>Jurusan</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
+                <thead class="text-light table-dark mt-2"></thead>
                 <tbody>
                     <!-- Data akan diisi oleh DataTables -->
                 </tbody>
@@ -120,6 +111,7 @@
                             return meta.row + meta.settings._iDisplayStart + 1;
                         }
                     },
+                    {data: 'siswa.nisn', title: 'NISN Siswa'},
                     {data: 'username', title: 'Username'},
                     {data: 'siswa.name', title: 'Nama Siswa'},
                     {data: 'siswa.kelas.name', title: 'Kelas'},
