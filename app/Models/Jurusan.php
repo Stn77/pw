@@ -14,4 +14,9 @@ class Jurusan extends Model
     {
         return $this->hasMany(Siswa::class);
     }
+
+    public function pivot()
+    {
+        return $this->hasMany(GuruPivot::class);
+    }
 }
