@@ -12,13 +12,14 @@
                     <i class="bi bi-plus"></i> Tambah Data
                 </button>
             </div>
-
-            <table class="table mt-2 table-striped table-bordered" id="akun-siswa">
-                <thead class="text-light table-dark mt-2"></thead>
-                <tbody>
-                    <!-- Data akan diisi oleh DataTables -->
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table mt-2 table-striped table-bordered" id="akun-siswa">
+                    <thead class="text-light table-dark mt-2"></thead>
+                    <tbody>
+                        <!-- Data akan diisi oleh DataTables -->
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         {{-- modal --}}

@@ -8,6 +8,9 @@
             max-height: 600px;
             border: 3px solid gray;
         }
+        img{
+            max-width: 100%;
+        }
     </style>
     @endpush
     <div class="qr-container mx-auto p-4 m-3">

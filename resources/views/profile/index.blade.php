@@ -1,11 +1,34 @@
 <x-layouts.app title="Profile" pageTitleName="Profile" sidebarShow=true>
-    <div class="d-flex ">
-        <div class="w-25 mx-auto">
-            <div class="mx-auto overflow-hidden rounded-circle ratio ratio-1x1 w-50 p-2 d-flex justify-content-center mt-5">
-                <img class="img-thump" src="https://scontent-cgk1-2.xx.fbcdn.net/v/t39.30808-1/515438128_1280212873642797_1749514787639101992_n.jpg?stp=c61.0.540.540a_dst-jpg_s200x200_tt6&_nc_cat=108&ccb=1-7&_nc_sid=e99d92&_nc_eui2=AeG-0dPA8-0tBNSicMBzc_QCBk_1bSVBSSYGT_VtJUFJJu9u8SES0BblghIpyzu7reJm-qJLCiOKmSJAELaO7_jm&_nc_ohc=crmFPwMofDIQ7kNvwEectwn&_nc_oc=AdnvkVJzgxhFa94Q4LTY6XSwpdvVesHWhNPYz_bSd2ggpJlBmZcJD6GEMFnxibWd5gs&_nc_zt=24&_nc_ht=scontent-cgk1-2.xx&_nc_gid=m__OLrFhbGVj0Z4NGDt9XQ&oh=00_AfZPdLMGJfd3rOn-S0VBLG6mpmhzCvhYdfYwjvwP9zwkDw&oe=68C082DF" alt="">
+    @push('style')
+    <style>
+        .profile-pic{
+            width: 200px;;
+        }
+        .info{
+            width: 75%;
+        }
+        @media (max-width: 1220px){
+            .m-c{
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            .profile-pic{
+                width: 200px;
+            }
+            .info {
+                width: 100%;
+            }
+        }
+    </style>
+    @endpush
+    <div class="d-flex m-c">
+        <div class=" mx-auto">
+            <div class="mx-auto overflow-hidden rounded-circle ratio ratio-1x1 p-2 d-flex justify-content-center mt-5 profile-pic">
+                <img data-visualcompletion="media-vc-image" class="" alt="Mungkin gambar terompet dan klarinet" referrerPolicy="origin-when-cross-origin" src="https://scontent-cgk1-2.xx.fbcdn.net/v/t39.30808-6/515438128_1280212873642797_1749514787639101992_n.jpg?_nc_cat=108&amp;ccb=1-7&amp;_nc_sid=6ee11a&amp;_nc_eui2=AeG-0dPA8-0tBNSicMBzc_QCBk_1bSVBSSYGT_VtJUFJJu9u8SES0BblghIpyzu7reJm-qJLCiOKmSJAELaO7_jm&amp;_nc_ohc=EkyusGuFgBYQ7kNvwEav24J&amp;_nc_oc=Adk11fKgavfomrb_ociYQMpTDDkzp-HTmBGOLeA7mjg_krPmB9ufRGRucBdWG9rTs7w&amp;_nc_zt=23&amp;_nc_ht=scontent-cgk1-2.xx&amp;_nc_gid=pFWFKn0voHp7zdWTDEqKnw&amp;oh=00_AfaAH7de1gCbUg64EqAV3hL4hBWF96SPbh3wX5P5wJgGlQ&amp;oe=68D3F09D"/>
             </div>
         </div>
-        <div class="info w-75">
+        <div class="info">
             <div class="p-2">
                 <div class="form border shadow-sm rounded-2 p-2">
 
