@@ -52,7 +52,7 @@ class AkunSiswa extends Controller
 
             return response()->json([
                 'status' => 200,
-                'message' => 'Validation passed',
+                'message' => 'Data Success Create',
                 'data' => $request->all()
             ]);
         } catch (\Exception $e) {
