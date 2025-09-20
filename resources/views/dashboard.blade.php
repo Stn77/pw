@@ -22,7 +22,7 @@
             /* color: white; */
         }
         .data, .data-l{
-            min-width: 15rem;
+            min-width: 13rem;
             height: 40px;
             display: flex;
             justify-content: space-between;
@@ -52,9 +52,11 @@
         .data p, .data-l p{
             margin: 0;
             cursor: pointer;
+            padding-right: 4px;
         }
         .welcome-admin{
-            margin-bottom: 1rem
+            margin-bottom: 1rem;
+            width: 100%;
         }
         .mini-nav{
             margin: 1rem 0;
@@ -70,8 +72,11 @@
             .data{
                 margin: 0.4rem;
             }
-            .welcome-admin{
-
+            .s-nav{
+                flex-direction: column;
+            }
+            .s-nav a{
+                margin: 5px 0;
             }
         }
     </style>
@@ -81,15 +86,15 @@
             <div class="d-flex flex-column">
                 <p class="h4 welcome-admin" style="color: #1E293B;">Selamat Datang di Dashboard Admin</p>
                 <div class="f-c">
-                    <a class="data data-1 h6 count"><p>Jumlah Siswa Absen</p> <span>45</span></a>
-                    <a class="data data-2 h6 late"><p>Terlambat</p> <span>12</span></a>
-                    <a class="data data-3 h6 perfect"><p>Tepat Waktu</p> <span>33</span></a>
+                    <a class="data data-1 h6 count"><p>Jumlah Siswa Absen</p> <span></span></a>
+                    <a class="data data-2 h6 late"><p>Terlambat</p> <span>{{$absenTelat}}</span></a>
+                    <a class="data data-3 h6 perfect"><p>Tepat Waktu</p> <span>{{$absenTepatWaktu}}</span></a>
                 </div>
             </div>
         </div>
         <div class="bottom-head w-100">
             <div class="mini-nav">
-                <div class="d-flex flex-row">
+                <div class="d-flex s-nav">
                     <a href="{{route('data.students.account')}}" class="data-l h6"><p>Daftar Siswa</p> <i class="bi bi-box-arrow-up-right"></i></a>
                     <a href="{{route('data.absen')}}" class="data-l h6"><p>Data Absen</p> <i class="bi bi-box-arrow-up-right"></i></a>
                 </div>
