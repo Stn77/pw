@@ -260,7 +260,7 @@
                                     </form>
                                 </div>
                                 <div class="tab-pane fade" id="banyak-data-content" role="tabpanel" aria-labelledby="banyak-data-tab">
-                                    <form action="" class="form-import-excel" method="POST" enctype="multipart/form-data" id="upload-form">
+                                    <form action="{{route('data.guru.import')}}" class="form-import-excel" method="POST" enctype="multipart/form-data" id="upload-form">
                                         @csrf
 
                                         <div class="mb-4">
@@ -314,21 +314,24 @@
                                                             <tr>
                                                                 <th><i class="fas fa-user me-1"></i>Kolom A</th>
                                                                 <th><i class="fas fa-id-card me-1"></i>Kolom B</th>
-                                                                <th><i class="fas fa-envelope me-1"></i>Kolom C</th>
-                                                                <th><i class="fas fa-key me-1"></i>Kolom D</th>
+                                                                <th><i class="fas fa-id-card me-1"></i>Kolom C</th>
+                                                                <th><i class="fas fa-envelope me-1"></i>Kolom D</th>
+                                                                <th><i class="fas fa-key me-1"></i>Kolom E</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <tr>
+                                                                <td><strong>NIP</strong></td>
                                                                 <td><strong>Username</strong></td>
-                                                                <td><strong>Name</strong></td>
-                                                                <td><strong>Email</strong></td>
+                                                                <td><strong>Nama Lengkap</strong></td>
+                                                                <td><strong>Email (opsional)</strong></td>
                                                                 <td><strong>Password</strong></td>
                                                             </tr>
                                                             <tr class="table-light">
-                                                                <td>john_doe</td>
-                                                                <td>John Doe</td>
-                                                                <td>john@example.com</td>
+                                                                <td>1920090210982792</td>
+                                                                <td>jesi182</td>
+                                                                <td>Jesika Kharis</td>
+                                                                <td>jesika12@gmail.com</td>
                                                                 <td>password123</td>
                                                             </tr>
                                                         </tbody>
@@ -342,7 +345,7 @@
                                                 <i class="fas fa-upload me-2"></i>Import Users
                                             </button>
                                             <a href="{{route('data.guru.template')}}" id="unduhTemplate" class="btn btn-success btn-lg flex-fill">
-                                                <i class="fas fa-download"></i>Unduh Template ?
+                                                <i class="fas fa-download me-2"></i>Unduh Template ?
                                             </a>
                                         </div>
                                     </form>
@@ -448,11 +451,7 @@
 
             // Handle dropped files
             dragDropArea.addEventListener('drop', handleDrop, false);
-
-            // Handle click to browse
             dragDropArea.addEventListener('click', () => fileInput.click());
-
-            // Handle file input change
             fileInput.addEventListener('change', function(e) {
                 if (e.target.files.length > 0) {
                     handleFiles(e.target.files);
@@ -464,12 +463,139 @@
                 removeFile();
             });
 
-            // Handle form submission with progress
+            // AJAX FORM SUBMISSION
             uploadForm.addEventListener('submit', function(e) {
-                if (fileInput.files.length > 0) {
-                    showProgress();
+                e.preventDefault(); // Prevent normal form submission
+
+                if (fileInput.files.length === 0) {
+                    showNotifCreate('Pilih file Excel terlebih dahulu', 'error');
+                    return;
                 }
+
+                uploadFileAjax();
             });
+
+            function uploadFileAjax() {
+                const formData = new FormData();
+                formData.append('excel_file', fileInput.files[0]);
+                formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+
+                // Show progress and disable button
+                showProgress();
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Importing...';
+
+                // Show processing notification
+                showNotifCreate('Sedang memproses file Excel...', 'info');
+
+                // AJAX Request
+                fetch('{{route('data.guru.import')}}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => Promise.reject(err));
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Success handling
+                    hideProgress();
+                    resetForm();
+
+                    // Show success notification
+                    showNotifCreate(data.message, 'success');
+
+                    // Show detailed errors if any
+                    if (data.data.errors && data.data.errors.length > 0) {
+                        setTimeout(() => {
+                            let errorMessage = 'Detail Error:\n';
+                            data.data.errors.slice(0, 5).forEach(error => {
+                                errorMessage += '• ' + error + '\n';
+                            });
+                            if (data.data.errors.length > 5) {
+                                errorMessage += `... dan ${data.data.errors.length - 5} error lainnya`;
+                            }
+                            showNotifCreate(errorMessage, 'warning', 3000);
+                        }, 1000);
+                    }
+
+                    // RELOAD DATATABLE & Hide modal
+                    $('#addModal').modal('hide');
+                    $('#data-guru').DataTable().ajax.reload(null, false);
+                })
+                .catch(error => {
+                    // Error handling
+                    hideProgress();
+                    resetSubmitButton();
+
+                    let errorMessage = 'Terjadi kesalahan saat import';
+                    if (error.message) {
+                        errorMessage = error.message;
+                    } else if (error.errors) {
+                        // Validation errors
+                        const firstError = Object.values(error.errors)[0];
+                        if (Array.isArray(firstError)) {
+                            errorMessage = firstError[0];
+                        }
+                    }
+
+                    showNotifCreate(errorMessage, 'error');
+                    console.error('Import Error:', error);
+                });
+            }
+
+            function showProgress() {
+                uploadProgress.style.display = 'block';
+                let progress = 0;
+
+                const interval = setInterval(() => {
+                    progress += Math.random() * 10;
+                    if (progress > 90) progress = 90;
+                    progressBar.style.width = progress + '%';
+
+                    if (progress >= 90) {
+                        clearInterval(interval);
+                    }
+                }, 200);
+
+                // Store interval untuk cleanup nanti
+                uploadProgress.progressInterval = interval;
+            }
+
+            function hideProgress() {
+                // Complete progress bar
+                progressBar.style.width = '100%';
+                progressBar.classList.remove('progress-bar-animated');
+
+                // Clear interval if exists
+                if (uploadProgress.progressInterval) {
+                    clearInterval(uploadProgress.progressInterval);
+                }
+
+                // Hide after animation
+                setTimeout(() => {
+                    uploadProgress.style.display = 'none';
+                    progressBar.style.width = '0%';
+                    progressBar.classList.add('progress-bar-animated');
+                }, 1000);
+            }
+
+            function resetForm() {
+                fileInput.value = '';
+                removeFile();
+                resetSubmitButton();
+            }
+
+            function resetSubmitButton() {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-upload me-2"></i>Import Users';
+            }
 
             function preventDefaults(e) {
                 e.preventDefault();
@@ -502,13 +628,13 @@
                     ];
 
                     if (!allowedTypes.includes(file.type) && !file.name.match(/\.(xlsx|xls|csv)$/i)) {
-                        alert('Format file tidak didukung. Gunakan .xlsx, .xls, atau .csv');
+                        showNotifCreate('Format file tidak didukung. Gunakan .xlsx, .xls, atau .csv', 'error');
                         return;
                     }
 
                     // Validate file size (10MB)
                     if (file.size > 10 * 1024 * 1024) {
-                        alert('Ukuran file terlalu besar. Maksimal 10MB');
+                        showNotifCreate('Ukuran file terlalu besar. Maksimal 10MB', 'error');
                         return;
                     }
 
@@ -519,6 +645,7 @@
 
                     // Show file info
                     showFileInfo(file);
+                    showNotifCreate(`File "${file.name}" siap untuk diupload`, 'success');
                 }
             }
 
@@ -566,28 +693,6 @@
                         <small>Format: .xlsx, .xls, .csv (Max: 10MB)</small>
                     </div>
                 `;
-            }
-
-            function showProgress() {
-                uploadProgress.style.display = 'block';
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Uploading...';
-
-                // Simulate progress (since we can't track real progress easily with form submission)
-                let progress = 0;
-                const interval = setInterval(() => {
-                    progress += Math.random() * 15;
-                    if (progress > 90) progress = 90;
-                    progressBar.style.width = progress + '%';
-
-                    if (progress >= 90) {
-                        clearInterval(interval);
-                        progressBar.style.width = '100%';
-                        setTimeout(() => {
-                            progressBar.classList.remove('progress-bar-animated');
-                        }, 500);
-                    }
-                }, 200);
             }
 
             function formatFileSize(bytes) {
