@@ -206,146 +206,147 @@
     </div>
 
     {{-- add modal --}}
-<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalTitle">Tambah Data Guru</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <!-- Tab Navigation -->
-                <ul class="nav nav-tabs" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="satu-data-tab" data-bs-toggle="tab"
-                                data-bs-target="#satu-data-content" type="button" role="tab"
-                                aria-controls="satu-data-content" aria-selected="true">
-                            Satu Data
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="banyak-data-tab" data-bs-toggle="tab"
-                                data-bs-target="#banyak-data-content" type="button" role="tab"
-                                aria-controls="banyak-data-content" aria-selected="false">
-                            Banyak Data
-                        </button>
-                    </li>
-                </ul>
-                <div class="desktop-container">
-                    <div class="desktop-content">
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Tambah Data Guru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Tab Navigation -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="satu-data-tab" data-bs-toggle="tab"
+                                    data-bs-target="#satu-data-content" type="button" role="tab"
+                                    aria-controls="satu-data-content" aria-selected="true">
+                                Satu Data
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="banyak-data-tab" data-bs-toggle="tab"
+                                    data-bs-target="#banyak-data-content" type="button" role="tab"
+                                    aria-controls="banyak-data-content" aria-selected="false">
+                                Banyak Data
+                            </button>
+                        </li>
+                    </ul>
+                    <div class="desktop-container">
+                        <div class="desktop-content">
 
-                        <!-- Tab Content -->
-                        <div class="tab-content content-area" id="desktopTabContent">
-                            <div class="tab-pane fade show active" id="satu-data-content" role="tabpanel"
-                                 aria-labelledby="satu-data-tab">
-                                <h4>Form Tambah Satu Data Guru</h4>
-                                <form action="" method="POST">
-                                    @csrf
+                            <!-- Tab Content -->
+                            <div class="tab-content content-area" id="desktopTabContent">
+                                <div class="tab-pane fade show active" id="satu-data-content" role="tabpanel"
+                                    aria-labelledby="satu-data-tab">
+                                    <h4>Form Tambah Satu Data Guru</h4>
+                                    <form action="" method="POST">
+                                        @csrf
 
-                                    <div class="mb-3">
-                                        <label for="nama" class="form-label">Nama Guru</label>
-                                        <input type="text" class="form-control" id="nama">
-                                    </div>
+                                        <div class="mb-3">
+                                            <label for="nama" class="form-label">Nama Guru</label>
+                                            <input type="text" class="form-control" id="nama">
+                                        </div>
 
-                                    <div class="mb-3">
-                                        <label for="username" class="form-label">Username Guru</label>
-                                        <input type="text" class="form-control" id="username">
-                                    </div>
+                                        <div class="mb-3">
+                                            <label for="username" class="form-label">Username Guru</label>
+                                            <input type="text" class="form-control" id="username">
+                                        </div>
 
-                                    <div class="mb-3">
-                                        <label for="email" class="form-label">Email</label>
-                                        <input type="email" class="form-control" id="email">
-                                    </div>
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">Email</label>
+                                            <input type="email" class="form-control" id="email">
+                                        </div>
 
-                                </form>
-                            </div>
-                            <div class="tab-pane fade" id="banyak-data-content" role="tabpanel" aria-labelledby="banyak-data-tab">
-                                <form action="" class="form-import-excel" method="POST" enctype="multipart/form-data" id="upload-form">
-                                    @csrf
+                                    </form>
+                                </div>
+                                <div class="tab-pane fade" id="banyak-data-content" role="tabpanel" aria-labelledby="banyak-data-tab">
+                                    <form action="" class="form-import-excel" method="POST" enctype="multipart/form-data" id="upload-form">
+                                        @csrf
 
-                                    <div class="mb-4">
-                                        <div class="drag-drop-area" id="drag-drop-area">
-                                            <input type="file" class="file-input-hidden" id="excel_file" name="excel_file"
-                                                accept=".xlsx,.xls,.csv" required>
+                                        <div class="mb-4">
+                                            <div class="drag-drop-area" id="drag-drop-area">
+                                                <input type="file" class="file-input-hidden" id="excel_file" name="excel_file"
+                                                    accept=".xlsx,.xls,.csv" required>
 
-                                            <div class="upload-content">
-                                                <div class="upload-icon">
-                                                    <i class="fas fa-cloud-upload-alt"></i>
+                                                <div class="upload-content">
+                                                    <div class="upload-icon">
+                                                        <i class="fas fa-cloud-upload-alt"></i>
+                                                    </div>
+                                                    <div class="upload-text">
+                                                        <strong>Drag & Drop file Excel di sini</strong>
+                                                    </div>
+                                                    <div class="upload-subtext">
+                                                        atau <span style="color: #007bff; font-weight: 500;">klik untuk browse</span>
+                                                    </div>
+                                                    <div class="upload-subtext mt-2">
+                                                        <small>Format: .xlsx, .xls, .csv (Max: 10MB)</small>
+                                                    </div>
                                                 </div>
-                                                <div class="upload-text">
-                                                    <strong>Drag & Drop file Excel di sini</strong>
+                                            </div>
+
+                                            <div class="file-info" id="file-info">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <i class="fas fa-file-excel text-success me-2"></i>
+                                                        <span id="file-name"></span>
+                                                        <small class="text-muted ms-2">(<span id="file-size"></span>)</small>
+                                                    </div>
+                                                    <span class="remove-file" id="remove-file">
+                                                        <i class="fas fa-times"></i>
+                                                    </span>
                                                 </div>
-                                                <div class="upload-subtext">
-                                                    atau <span style="color: #007bff; font-weight: 500;">klik untuk browse</span>
+                                            </div>
+
+                                            <div class="progress" id="upload-progress">
+                                                <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                                    role="progressbar" style="width: 0%"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <div class="card">
+                                                <div class="card-header bg-light">
+                                                    <h6 class="mb-0"><i class="fas fa-info-circle me-2"></i>Format Excel yang diharapkan:</h6>
                                                 </div>
-                                                <div class="upload-subtext mt-2">
-                                                    <small>Format: .xlsx, .xls, .csv (Max: 10MB)</small>
+                                                <div class="card-body">
+                                                    <table class="table table-sm table-bordered mb-0">
+                                                        <thead class="table-light">
+                                                            <tr>
+                                                                <th><i class="fas fa-user me-1"></i>Kolom A</th>
+                                                                <th><i class="fas fa-id-card me-1"></i>Kolom B</th>
+                                                                <th><i class="fas fa-envelope me-1"></i>Kolom C</th>
+                                                                <th><i class="fas fa-key me-1"></i>Kolom D</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td><strong>Username</strong></td>
+                                                                <td><strong>Name</strong></td>
+                                                                <td><strong>Email</strong></td>
+                                                                <td><strong>Password</strong></td>
+                                                            </tr>
+                                                            <tr class="table-light">
+                                                                <td>john_doe</td>
+                                                                <td>John Doe</td>
+                                                                <td>john@example.com</td>
+                                                                <td>password123</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="file-info" id="file-info">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <i class="fas fa-file-excel text-success me-2"></i>
-                                                    <span id="file-name"></span>
-                                                    <small class="text-muted ms-2">(<span id="file-size"></span>)</small>
-                                                </div>
-                                                <span class="remove-file" id="remove-file">
-                                                    <i class="fas fa-times"></i>
-                                                </span>
-                                            </div>
+                                        <div class="d-flex submit-multi-user">
+                                            <button type="submit" class="btn btn-primary btn-lg flex-fill" id="submit-btn" disabled>
+                                                <i class="fas fa-upload me-2"></i>Import Users
+                                            </button>
+                                            <a href="{{route('data.guru.template')}}" id="unduhTemplate" class="btn btn-success btn-lg flex-fill">
+                                                <i class="fas fa-download"></i>Unduh Template ?
+                                            </a>
                                         </div>
-
-                                        <div class="progress" id="upload-progress">
-                                            <div class="progress-bar progress-bar-striped progress-bar-animated"
-                                                role="progressbar" style="width: 0%"></div>
-                                        </div>
-                                    </div>
-
-                                    <div class="mb-4">
-                                        <div class="card">
-                                            <div class="card-header bg-light">
-                                                <h6 class="mb-0"><i class="fas fa-info-circle me-2"></i>Format Excel yang diharapkan:</h6>
-                                            </div>
-                                            <div class="card-body">
-                                                <table class="table table-sm table-bordered mb-0">
-                                                    <thead class="table-light">
-                                                        <tr>
-                                                            <th><i class="fas fa-user me-1"></i>Kolom A</th>
-                                                            <th><i class="fas fa-id-card me-1"></i>Kolom B</th>
-                                                            <th><i class="fas fa-envelope me-1"></i>Kolom C</th>
-                                                            <th><i class="fas fa-key me-1"></i>Kolom D</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td><strong>Username</strong></td>
-                                                            <td><strong>Name</strong></td>
-                                                            <td><strong>Email</strong></td>
-                                                            <td><strong>Password</strong></td>
-                                                        </tr>
-                                                        <tr class="table-light">
-                                                            <td>john_doe</td>
-                                                            <td>John Doe</td>
-                                                            <td>john@example.com</td>
-                                                            <td>password123</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="d-flex submit-multi-user">
-                                        <button type="submit" class="btn btn-primary btn-lg flex-fill" id="submit-btn" disabled>
-                                            <i class="fas fa-upload me-2"></i>Import Users
-                                        </button>
-                                        <button id="unduhTemplate" class="btn btn-success btn-lg flex-fill">
-                                            <i class="fas fa-download"></i>Unduh Template ?
-                                        </button>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -353,7 +354,6 @@
             </div>
         </div>
     </div>
-</div>
 
     @push('script')
     <script>
@@ -417,28 +417,6 @@
 
         }
 
-        $(document).ready(() => {
-            $('#unduhTemplate').on('click', () => {
-                fetch('', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token
-                    },
-                    body: JSON.stringify({
-                        decodedText: decodedText,
-                        decodedResult: decodedResult,
-                        _token: $('meta[name="csrf-token"]').attr('content')
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if(response.status === 200){
-                        showNotification('Template Berhasil Di Unduh', 'success', 3000)
-                    }
-                })
-            })
-        })
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {

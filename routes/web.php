@@ -49,6 +49,7 @@ Route::prefix('data/guru')->middleware(['auth', 'role:admin'])->group(function()
     Route::get('/edit/{id}', [Guru::class, 'edit'])->name('data.guru.edit');
     Route::post('/store', [Guru::class, 'store'])->name('data.guru.store');
     Route::get('/get', [Guru::class, 'getData'])->name('data.guru.get');
+    Route::get('/template', [Guru::class, 'getTemplate'])->name('data.guru.template');
 });
 
 Route::middleware('auth')->group(function (){
