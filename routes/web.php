@@ -13,6 +13,9 @@ Route::get('/', function () {
 });
 
 Route::get('/test', [TestAlgorithm::class, 'index'])->name('test.algorithm');
+Route::get('/test-view', function () {
+    return view('test-view');
+});
 
 Route::controller(AuthController::class)->middleware('guest')->group(function () {
     Route::get('/register', 'showRegistrationForm')->name('register');
