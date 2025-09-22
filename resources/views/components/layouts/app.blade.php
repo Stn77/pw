@@ -430,7 +430,7 @@
         });
     </script>
     <script>
-        function showNotifCreate(message, type = 'success'){
+        function showNotifCreate(message, type = 'success', duration = 5000){
             // Tentukan kelas alert berdasarkan type
             let alertClass;
             switch(type) {
@@ -472,7 +472,7 @@
             // Hilangkan notifikasi setelah 2 detik
             setTimeout(function() {
                 $('#' + notificationId).alert('close');
-            }, 5000);
+            }, duration);
         }
     </script>
     @stack('script')
