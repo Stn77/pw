@@ -311,13 +311,6 @@
                                                 <div class="card-body">
                                                     <table class="table table-sm table-bordered mb-0">
                                                         <thead class="table-light">
-                                                            <tr>
-                                                                <th><i class="fas fa-user me-1"></i>Kolom A</th>
-                                                                <th><i class="fas fa-id-card me-1"></i>Kolom B</th>
-                                                                <th><i class="fas fa-id-card me-1"></i>Kolom C</th>
-                                                                <th><i class="fas fa-envelope me-1"></i>Kolom D</th>
-                                                                <th><i class="fas fa-key me-1"></i>Kolom E</th>
-                                                            </tr>
                                                         </thead>
                                                         <tbody>
                                                             <tr>
@@ -342,7 +335,7 @@
 
                                         <div class="d-flex submit-multi-user">
                                             <button type="submit" class="btn btn-primary btn-lg flex-fill" id="submit-btn" disabled>
-                                                <i class="fas fa-upload me-2"></i>Import Users
+                                                <i class="fas fa-upload me-2"></i>Import Data Guru
                                             </button>
                                             <a href="{{route('data.guru.template')}}" id="unduhTemplate" class="btn btn-success btn-lg flex-fill">
                                                 <i class="fas fa-download me-2"></i>Unduh Template ?
@@ -594,7 +587,7 @@
 
             function resetSubmitButton() {
                 submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-upload me-2"></i>Import Users';
+                submitBtn.innerHTML = '<i class="fas fa-upload me-2"></i>Import Data Guru';
             }
 
             function preventDefaults(e) {
@@ -666,7 +659,7 @@
                         <strong>File siap untuk diupload!</strong>
                     </div>
                     <div class="upload-subtext">
-                        Klik "Import Users" untuk memulai proses import
+                        Klik "Import Data Guru" untuk memulai proses import
                     </div>
                 `;
             }
