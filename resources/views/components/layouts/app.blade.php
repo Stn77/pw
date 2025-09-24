@@ -301,7 +301,9 @@
                                     <li class=" {{Route::is('data.absen') ? 'sub-nav-active' : ''}}"><a href="{{route('data.absen')}}" class="py-1 rounded d-block {{Route::is('data.absen') ? 'sub-nav-active' : ''}}">Riwayat Absen</a></li>
                                     <li class=" {{Route::is('data.students.account') ? 'sub-nav-active' : ''}}"><a href="{{route('data.students.account')}}" class="py-1 rounded d-block {{Route::is('data.students.account') ? 'sub-nav-active' : ''}}">Akun Siswa</a></li>
                                     @endhasanyrole
+                                    @hasanyrole('admin')
                                     <li class=" {{$dataGuru ? 'sub-nav-active' : ''}}"><a href="{{route('data.guru.index')}}" class="py-1 rounded d-block {{$dataGuru ? 'sub-nav-active' : ''}}">Akun Guru</a></li>
+                                    @endhasanyrole
                                 </ul>
                             </div>
                         </li>
