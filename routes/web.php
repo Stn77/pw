@@ -53,6 +53,14 @@ Route::prefix('data/guru')->middleware(['auth', 'role:admin'])->group(function()
     Route::get('/template', [Guru::class, 'getTemplate'])->name('data.guru.template');
 });
 
+Route::prefix('data/siswa')->middleware(['auth', 'role:admin|guru'])->group(function(){
+    Route::get('/students/get', [AkunSiswa::class, 'getData'])->name('akun.siswa.get');
+    Route::get('/absen/get', [RiwayatAbsen::class, 'getData'])->name('data.absen.get');
+
+    Route::post('/import', [AkunSiswa::class, 'import'])->name('data.siswa.import');
+    Route::get('/template', [AkunSiswa::class, 'getTemplate'])->name('data.siswa.template');
+});
+
 Route::middleware('auth')->group(function (){
     Route::get('/scanner', [Scanner::class, 'index'])->name('scanner');
     Route::post('/scanner/scan', [Scanner::class, 'scan'])->name('scanner.scan');
@@ -61,8 +69,6 @@ Route::middleware('auth')->group(function (){
 
 Route::post('/students/store', [AkunSiswa::class, 'store'])->name('akun.siswa.store');
 
-Route::get('/students/get', [AkunSiswa::class, 'getData'])->name('akun.siswa.get');
-Route::get('/absen/get', [RiwayatAbsen::class, 'getData'])->name('data.absen.get');
 // Route::post('');
 
 // Route::get('/test-broadcast', fn() => view('test-broadcast'));
