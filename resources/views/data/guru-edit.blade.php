@@ -51,8 +51,11 @@
         <div class="d-flex m-c">
             <div class=" mx-auto">
                 <div class="mx-auto overflow-hidden rounded-circle ratio ratio-1x1 p-2 d-flex justify-content-center mt-5 profile-pic">
-                    <img id="currentProfileImage" class="current-image" alt="Foto Profile"
-                        src="{{ asset('storage/profile-images/' . $guru->user->foto_profile) }}">
+                    @if ($guru->user->foto_profile)
+                        <img id="currentProfileImage" class="current-image" alt="Foto Profile" src="{{ asset('storage/profile-images/' . $guru->user->foto_profile) }}">
+                    @else
+                        <img id="currentProfileImage" class="current-image" alt="Foto Profile" src="{{ asset('img/default-profile.png') }}">
+                    @endif
                     <img id="imagePreview" class="preview-image rounded-circle" src="#" alt="Preview Gambar">
                     {{-- <img src="{{ asset('storage/profile-images/' . $guru->user->foto_profile) }}" alt="Foto Profil" width="150"> --}}
 
