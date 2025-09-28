@@ -146,10 +146,40 @@
                     const reader = new FileReader();
 
                     reader.onload = function(e) {
-                        // Hide current image and show preview
-                        currentImage.hide();
-                        preview.attr('src', e.target.result);
-                        preview.show();
+                        const img = new Image();
+
+                        img.onload = function() {
+                            // Validasi rasio gambar 1:1
+                            const width = this.width;
+                            const height = this.height;
+                            const ratio = width / height;
+
+                            // Toleransi kecil untuk perbandingan floating point
+                            if (Math.abs(ratio - 1) > 0.01) {
+                                errorDiv.text('Rasio gambar harus 1:1 (persegi). Harap pilih gambar dengan lebar dan tinggi yang sama.');
+                                $('#image').val('');
+                                preview.hide();
+                                currentImage.show();
+                                return;
+                            }
+
+                            // Jika validasi berhasil, tampilkan preview
+                            currentImage.hide();
+                            preview.attr('src', e.target.result);
+                            preview.show();
+                        }
+
+                        img.onerror = function() {
+                            errorDiv.text('Gagal memuat gambar. Harap coba lagi.');
+                            $('#image').val('');
+                        }
+
+                        img.src = e.target.result;
+                    }
+
+                    reader.onerror = function() {
+                        errorDiv.text('Gagal membaca file. Harap coba lagi.');
+                        this.value = '';
                     }
 
                     reader.readAsDataURL(file);
