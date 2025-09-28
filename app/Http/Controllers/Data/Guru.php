@@ -120,13 +120,115 @@ class Guru extends Controller
     }
 
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
-        return view('data.guru.create');
+        try{
+
+            User::create([
+                'username' => $request->username,
+                'name' => $request->nama,
+                'email' => $request->email,
+                'password' => $request->password, // Akan di-hash otomatis oleh model
+            ])->assignRole('teacher')->guru()->create([
+                'name' => $request->nama,
+                'nip' => $request->nip
+            ]);
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Data Success Create',
+                'data' => $request->all()
+            ]);
+
+        }catch(\Illuminate\Validation\ValidationException $e) {
+            Log::error('error validasi data '.$e->errors());
+
+            return response()->json([
+                'status' => 422,
+                'message' => 'input data harus lengkap',
+                'data' => $request->all()
+            ]);
+        }
+
+        catch(Exception $e) {
+            Log::error('error dalam memasukkan data guru '.$e->getMessage());
+
+            return response()->json([
+                'status' => 500,
+                'message' => 'error'
+            ]);
+        }
     }
 
     public function edit($id)
     {
-        return view('data.guru-edit', compact('id'));
+        $guru = ModelsGuru::with('user')->find($id);
+
+        // dd($guru);
+
+        return view('data.guru-edit', compact(['guru', 'id']));
+    }
+
+    public function update(Request $request)
+    {
+        try {
+
+            $guru = ModelsGuru::with('user')->find($request->idGuru);
+
+            Log::debug($guru);
+
+            $userImage = $guru->user->foto_profile;
+
+            if($request->hasFile('image')){
+
+                if($userImage){
+                    $oldImagePath = 'public/profile-images/' . $userImage;
+                    if (Storage::exists($oldImagePath)) {
+                        Storage::delete($oldImagePath);
+                    }
+                }
+
+                $imageName = time() . generateRandomString(12) . '.' . $request->image->extension();
+                $request->image->storeAs('profile-images', $imageName, 'public');
+
+                // Update user profile image
+                $guru->user->foto_profile = $imageName;
+                $guru->user->save();
+
+                // Get the URL for the new image
+                $imageUrl = Storage::url('profile-images/' . $imageName);
+            }
+
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Profile berhasil diperbarui!',
+                'url' => asset('storage/profile-images/' . $guru->user->foto_profile),
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // Di controller Laravel Anda
+    public function getImage(Request $request)
+    {
+
+        $images = ModelsGuru::with('user')->find($request->id);
+        // $images->user->image;
+
+        return response()->json([
+            'success' => true,
+            'images' => asset('storage/profile-images/' . $images->user->foto_profile)
+        ]);
+    }
+
+    public function setClass(Request $request)
+    {
+
     }
 }
