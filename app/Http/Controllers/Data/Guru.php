@@ -217,14 +217,19 @@ class Guru extends Controller
     // Di controller Laravel Anda
     public function getImage($id)
     {
-
+        $imageUrl = '';
         $images = ModelsGuru::with('user')->find($id);
-        $imageUrl = asset('storage/profile-images/' . $images->user->foto_profile);
+        if($images->user->foto_profile){
+            $imageUrl = asset('storage/profile-images/' . $images->user->foto_profile);
+        }else{
+            $imageUrl = asset('img/default-profile.png');
+        }
+
+        Log::debug($imageUrl);
 
         return response()->json([
             'success' => true,
-            'image' => $imageUrl ?? null,
-            'message' => $id
+            'image' => $imageUrl,
         ]);
     }
 
