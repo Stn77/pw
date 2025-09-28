@@ -37,6 +37,86 @@
         .submit-multi-user{
             gap: 1rem;
         }
+
+        .top {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .foto-profile-c {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 3px solid #dee2e6;
+        }
+
+        .foto-profile-c img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .data-inti {
+            flex: 1;
+        }
+
+        .daftar-kelas {
+            margin: 0 20px 20px;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 1220px) {
+            .top {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .foto-profile-c {
+                width: 180px;
+                height: 180px;
+            }
+
+            .data-inti {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .modal-dialog {
+                margin: 10px;
+            }
+
+            .foto-profile-c {
+                width: 150px;
+                height: 150px;
+            }
+
+            .top {
+                padding: 15px;
+            }
+
+            .daftar-kelas {
+                margin: 0 10px 15px;
+                padding: 15px !important;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .foto-profile-c {
+                width: 120px;
+                height: 120px;
+            }
+
+            .top {
+                padding: 10px;
+            }
+        }
     </style>
     <style>
         .drag-drop-area {
@@ -193,17 +273,46 @@
     </div>
 
     {{-- modal --}}
-    <div class="modal fade" id="infoGuruModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitle"></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
+<div class="modal fade" id="infoGuruModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Informasi Guru</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="top">
+                    <div class="foto-profile-c">
+                        <img src="" alt="fotoGuru" id="foto-guru">
+                    </div>
+                    <div class="data-inti">
+                        <div class="form-group mb-3">
+                            <label class="form-label" for="nama-display">Nama Guru</label>
+                            <input class="form-control" readonly type="text" name="nama-display" id="nama-display">
+                        </div>
 
+                        <div class="form-group mb-3">
+                            <label class="form-label" for="nip-display">NIP Guru</label>
+                            <input class="form-control" readonly type="text" name="nip-display" id="nip-display">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="form-label" for="email-display">Email Guru</label>
+                            <input class="form-control" readonly type="text" name="email-display" id="email-display">
+                        </div>
+                    </div>
+                </div>
+                <div class="daftar-kelas rounded p-4 border" id="daftar-kelas">
+                    <!-- Daftar kelas akan ditampilkan di sini -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
             </div>
         </div>
     </div>
+</div>
 
     {{-- add modal --}}
     <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
@@ -239,22 +348,44 @@
                                 <div class="tab-pane fade show active" id="satu-data-content" role="tabpanel"
                                     aria-labelledby="satu-data-tab">
                                     <h4>Form Tambah Satu Data Guru</h4>
-                                    <form action="" method="POST">
+                                    <form id="newGuru">
                                         @csrf
 
-                                        <div class="mb-3">
-                                            <label for="nama" class="form-label">Nama Guru</label>
-                                            <input type="text" class="form-control" id="nama">
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label for="nama" class="form-label">Nama Guru</label>
+                                                <input type="text" class="form-control" id="nama">
+                                                <div class="invalid-feedback">Nama harus di isi</div>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="username" class="form-label">Username Guru</label>
+                                                <input type="text" class="form-control" id="username">
+                                                <div class="invalid-feedback">Username harus di isi</div>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="nip" class="form-label">NIP Guru</label>
+                                                <input type="text" class="form-control" id="nip">
+                                                <div class="invalid-feedback">NIP harus di isi</div>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="email" class="form-label">Email</label>
+                                                <input type="email" class="form-control" id="email">
+                                                <div class="invalid-feedback">Email harus di isi</div>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="password" class="form-label">Password</label>
+                                                <input type="password" class="form-control" id="password">
+                                                <div class="invalid-feedback">Password harus di isi</div>
+                                            </div>
                                         </div>
 
-                                        <div class="mb-3">
-                                            <label for="username" class="form-label">Username Guru</label>
-                                            <input type="text" class="form-control" id="username">
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label for="email" class="form-label">Email</label>
-                                            <input type="email" class="form-control" id="email">
+                                        <div class="">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Tambahkan</button>
                                         </div>
 
                                     </form>
@@ -353,8 +484,9 @@
 
     @push('script')
     <script>
+        var userRoute = "{{ route('data.guru.image', ['id' => ':id']) }}";
         $(document).ready(() => {
-            let absenSiswaTable = $('#data-guru').DataTable({
+            let dataGuruTable = $('#data-guru').DataTable({
                 processing: true,
                 pageLength: 50,
                 serverSide: true,
@@ -398,18 +530,102 @@
                         }
                     }
                 ]
+            });
+
+            $('#newGuru').on('submit', function (e) {
+                e.preventDefault()
+
+                if(this.checkValidity() === false){
+                    e.stopPropagation();
+                    $(this).addClass('was-validated');
+                    return;
+                }
+
+                const formData = {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    nama: $('#nama').val(),
+                    username: $('#username').val(),
+                    nip: $('#nip').val(),
+                    email: $('#email').val(),
+                    password: $('#password').val(),
+
+                }
+
+                $.ajax({
+                    url: '{{route('data.guru.store')}}',
+                    type: 'POST',
+                    data: formData,
+                    success: function(response){
+                        if(response.status === 200){
+                            showNotifCreate('Data Guru berhasil ditambahkan', 'success')
+                            $('#addModal').modal('hide')
+                            dataGuruTable.ajax.reload()
+                        } else {
+                            showNotifCreate(response.message, 'alert')
+                        }
+                    },
+                    error: function (xhr){
+                        if (xhr.status === 422) {
+                            // Validasi server gagal
+                            const errors = xhr.responseJSON.errors;
+                            let errorMessage = '';
+
+                            for (const field in errors) {
+                                errorMessage += errors[field][0] + '\n';
+                            }
+
+                            alert('Validasi gagal:\n' + errorMessage);
+                        } else {
+                            alert('Terjadi kesalahan server. Silakan coba lagi.');
+                        }
+                    }
+
+                })
             })
 
         })
 
-        function infoGuru(id){
+        function infoGuru(id)
+        {
             $('#infoGuruModal').modal('show')
             $('#modalTitle').text('Informasi Guru')
-
+            loadImageFromLaravel(id)
 
         }
 
-        function editGuru(id){
+        function loadImageFromLaravel(id)
+        {
+            var url = userRoute.replace(':id', id);
+
+            $.ajax({
+                url: url ,
+                type: "GET",
+                // data: id = id,
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response){
+                    if(response.success){
+                        // displayImage(response.image)
+                        console.log(response.image)
+                        $('#foto-guru').attr('src', response.image)
+                    }else{
+                        console.log('ada yang salah')
+                    }
+                },
+                error: function(xhr, status, error){
+                    console.error("Error " + error)
+                    alert("an error from request")
+                }
+            })
+        }
+
+        function displayImage(image){
+
+        }
+
+        function rmImage(id){
 
         }
 
@@ -646,7 +862,7 @@
                 fileName.textContent = file.name;
                 fileSize.textContent = formatFileSize(file.size);
                 fileInfo.classList.add('show');
-                dragDropArea.classList.add('has-file');
+                dragDropArea.classList.add('has-file');invalid assignment left-hand side
                 submitBtn.disabled = false;
 
                 // Update drag drop area content
