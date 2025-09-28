@@ -484,7 +484,7 @@
 
     @push('script')
     <script>
-        var userRoute = "{{ route('data.guru.image', ['id' => ':id']) }}";
+        var userRoute = "{{ route('data.guru.sigle', ['id' => ':id']) }}";
         $(document).ready(() => {
             let dataGuruTable = $('#data-guru').DataTable({
                 processing: true,
@@ -608,8 +608,11 @@
                 success: function(response){
                     if(response.success){
                         // displayImage(response.image)
-                        console.log(response.image)
+                        // console.log(response.)
                         $('#foto-guru').attr('src', response.image)
+                        $('#nama-display').val(response.name)
+                        $('#nip-display').val(response.nip)
+                        $('#email-display').val(response.email)
                     }else{
                         console.log('ada yang salah')
                     }
