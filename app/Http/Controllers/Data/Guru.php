@@ -175,8 +175,6 @@ class Guru extends Controller
 
             $guru = ModelsGuru::with('user')->find($request->idGuru);
 
-            Log::debug($guru);
-
             $userImage = $guru->user->foto_profile;
 
             if($request->hasFile('image')){
@@ -224,8 +222,6 @@ class Guru extends Controller
         }else{
             $imageUrl = asset('img/default-profile.png');
         }
-
-        Log::debug($imageUrl);
 
         return response()->json([
             'success' => true,
