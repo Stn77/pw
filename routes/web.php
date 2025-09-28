@@ -47,6 +47,8 @@ Route::prefix('data/guru')->middleware(['auth', 'role:admin'])->group(function()
     Route::get('/', [Guru::class, 'index'])->name('data.guru.index');
     Route::get('/create', [Guru::class, 'create'])->name('data.guru.create');
     Route::get('/edit/{id}', [Guru::class, 'edit'])->name('data.guru.edit');
+    Route::post('/update', [Guru::class, 'update'])->name('data.guru.update');
+    Route::get('/get-image/{id}', [Guru::class, 'getImage'])->name('data.guru.image');
     Route::post('/store', [Guru::class, 'store'])->name('data.guru.store');
     Route::post('/import', [Guru::class, 'import'])->name('data.guru.import');
     Route::get('/get', [Guru::class, 'getData'])->name('data.guru.get');
