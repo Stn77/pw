@@ -11,22 +11,14 @@ use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
-    /**
-     * Show the login form.
-     */
     public function showLoginForm()
     {
         return view('auth.login');
     }
 
-    /**
-     * Handle a login request.
-     */
     public function loginSubmit(Request $request)
     {
-        // Validate and authenticate the user...
         $credentials = $request->only('username', 'password');
-        // dd($request->username, $request->password);
         $request->validate([
             'username' => 'required|string',
             'password' => 'required|string',
@@ -67,9 +59,6 @@ class AuthController extends Controller
         }
     }
 
-    /**
-     * Log the user out.
-     */
     public function logout(Request $request)
     {
         Auth::logout();
@@ -78,9 +67,6 @@ class AuthController extends Controller
         return redirect()->route('login');
     }
 
-    /**
-     * Show the registration form.
-     */
     public function showRegistrationForm()
     {
         return view('auth.register');
