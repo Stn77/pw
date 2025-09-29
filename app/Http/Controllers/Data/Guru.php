@@ -122,7 +122,7 @@ class Guru extends Controller
 
     public function store(Request $request)
     {
-        try{
+        try {
 
             User::create([
                 'username' => $request->username,
@@ -139,19 +139,16 @@ class Guru extends Controller
                 'message' => 'Data Success Create',
                 'data' => $request->all()
             ]);
-
-        }catch(\Illuminate\Validation\ValidationException $e) {
-            Log::error('error validasi data '.$e->errors());
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('error validasi data ' . $e->errors());
 
             return response()->json([
                 'status' => 422,
                 'message' => 'input data harus lengkap',
                 'data' => $request->all()
             ]);
-        }
-
-        catch(Exception $e) {
-            Log::error('error dalam memasukkan data guru '.$e->getMessage());
+        } catch (Exception $e) {
+            Log::error('error dalam memasukkan data guru ' . $e->getMessage());
 
             return response()->json([
                 'status' => 500,
@@ -177,9 +174,9 @@ class Guru extends Controller
 
             $userImage = $guru->user->foto_profile;
 
-            if($request->hasFile('image')){
+            if ($request->hasFile('image')) {
 
-                if($userImage){
+                if ($userImage) {
                     $oldImagePath = 'public/profile-images/' . $userImage;
                     if (Storage::exists($oldImagePath)) {
                         Storage::delete($oldImagePath);
@@ -203,7 +200,6 @@ class Guru extends Controller
                 'message' => 'Profile berhasil diperbarui!',
                 'url' => asset('storage/profile-images/' . $guru->user->foto_profile),
             ]);
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -217,9 +213,9 @@ class Guru extends Controller
     {
         $imageUrl = '';
         $data = ModelsGuru::with('user')->find($id);
-        if($data->user->foto_profile){
+        if ($data->user->foto_profile) {
             $imageUrl = asset('storage/profile-images/' . $data->user->foto_profile);
-        }else{
+        } else {
             $imageUrl = asset('img/default-profile.png');
         }
 
@@ -232,8 +228,22 @@ class Guru extends Controller
         ]);
     }
 
-    public function setClass(Request $request)
+    public function delete($id)
     {
+        try{
+            $data = ModelsGuru::with('user')->find($id);
+            $data->user->delete();
+            $data->delete();
 
+            return response()->json([
+                'success' => true,
+            ]);
+        }catch(Exception $e){
+            return response()->json([
+                'success' => false
+            ]);
+        }
     }
+
+    public function setClass(Request $request) {}
 }

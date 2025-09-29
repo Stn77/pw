@@ -482,9 +482,29 @@
         </div>
     </div>
 
+{{-- comfirm delete --}}
+<div class="modal fade" id="confirmDelete" tabindex="-1" aria-labelledby="comfirmDelete" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Konfirmasi Hapus Data</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="deleteData">
+                    <input type="text" hidden id="idGuru">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Hapus</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
     @push('script')
     <script>
         var userRoute = "{{ route('data.guru.sigle', ['id' => ':id']) }}";
+        var deleteRoute = "{{ route('data.guru.delete', ['id' => ':id']) }}";
         $(document).ready(() => {
             let dataGuruTable = $('#data-guru').DataTable({
                 processing: true,
@@ -516,13 +536,13 @@
                             // let id = ri;
                             return `
                                 <div class="btn-group">
-                                    <a href="{{route('data.guru.edit', '')}}/ ${row.id}" class="btn btn-sm btn-primary info-btn mx-2" data-id="${row.id}">
+                                    <a href="{{route('data.guru.edit', '')}}/ ${row.id}" class="btn btn-sm btn-primary info-btn" data-id="${row.id}">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <button class="btn btn-sm btn-warning info-btn mx-2" onclick="infoGuru(${row.id})" data-id="${row.id}">
+                                    <button class="btn btn-sm btn-warning info-btn" onclick="infoGuru(${row.id})" data-id="${row.id}">
                                         <i class="bi bi-info"></i>
                                     </button>
-                                    <button class="btn btn-sm btn-danger delete-btn mx-2" data-id="${row.id}">
+                                    <button class="btn btn-sm btn-danger delete-btn" data-id="${row.id}" onclick="confirmDelete(${row.id})">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </div>
@@ -583,6 +603,50 @@
                 })
             })
 
+            $('#deleteData').submit(function(e) {
+                e.preventDefault()
+
+                const formData = new FormData(this)
+                const submitBtn = $('#submitBtn')
+
+                submitBtn.prop('disabled', true)
+
+                $.ajax({
+                    url: deleteRoute.replace(':id', $('#idGuru').val()),
+                    type: 'DELETE',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response){
+                        if(response.success){
+                            console.log('data dihapus')
+
+                            showNotifCreate('Data Guru Dihapus', 'success')
+                            $('#confirmDelete').modal('hide')
+                            dataGuruTable.ajax.reload()
+                        }
+                    },
+                    error: function(xhr) {
+                        let errorMessage = 'Terjadi kesalahan saat mengupload!';
+                        console.log(xhr)
+
+                        if (xhr.responseJSON && xhr.responseJSON.errors) {
+                            // Handle validation errors
+                            const errors = xhr.responseJSON.errors;
+                            if (errors.image) {
+                                errorMessage = errors.image[0];
+                            } else if (xhr.responseJSON.message) {
+                                errorMessage = xhr.responseJSON.message;
+                            }
+                        }
+
+                    }
+                })
+            })
+
         })
 
         function infoGuru(id)
@@ -624,14 +688,10 @@
             })
         }
 
-        function displayImage(image){
-
+        function confirmDelete(id){
+            $('#confirmDelete').modal('show')
+            $('#idGuru').val(id)
         }
-
-        function rmImage(id){
-
-        }
-
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
