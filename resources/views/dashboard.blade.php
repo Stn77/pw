@@ -95,7 +95,7 @@
         <div class="bottom-head w-100">
             <div class="mini-nav">
                 <div class="d-flex s-nav">
-                    <a href="{{route('data.students.account')}}" class="data-l h6"><p>Daftar Siswa</p> <i class="bi bi-box-arrow-up-right"></i></a>
+                    <a href="{{route('data.siswa.index')}}" class="data-l h6"><p>Daftar Siswa</p> <i class="bi bi-box-arrow-up-right"></i></a>
                     <a href="{{route('data.absen')}}" class="data-l h6"><p>Data Absen</p> <i class="bi bi-box-arrow-up-right"></i></a>
                 </div>
             </div>
