@@ -232,6 +232,12 @@ class Guru extends Controller
     {
         try{
             $data = ModelsGuru::with('user')->find($id);
+            if($data->user->foto_profile){
+                $oldImagePath = 'public/profile-images/' . $data->user->foto_profile;
+                if (Storage::exists($oldImagePath)) {
+                    Storage::delete($oldImagePath);
+                }
+            }
             $data->user->delete();
             $data->delete();
 

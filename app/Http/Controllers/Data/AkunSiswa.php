@@ -234,6 +234,12 @@ class AkunSiswa extends Controller
     public function delete($id){
         try{
             $data = User::with('siswa')->find($id);
+            if($data->user->foto_profile){
+                $oldImagePath = 'public/profile-images/' . $data->user->foto_profile;
+                if (Storage::exists($oldImagePath)) {
+                    Storage::delete($oldImagePath);
+                }
+            }
             $data->siswa->delete();
             $data->delete();
             return response()->json([
