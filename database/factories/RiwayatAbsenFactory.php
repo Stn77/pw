@@ -21,7 +21,7 @@ class RiwayatAbsenFactory extends Factory
         return [
             'user_id' => fake()->numberBetween(3, 13),
             'tanggal' => fake()->date(),
-            'hari' => Carbon::parse(fake()->date())->format('l'),
+            'hari' => fake()->date(),
             'is_late' => fake()->randomElement(['Terlambat', 'Tepat Waktu']),
         ];
     }

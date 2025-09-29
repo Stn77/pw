@@ -79,3 +79,9 @@ Route::post('/students/store', [AkunSiswa::class, 'store'])->name('akun.siswa.st
 //     event(new \App\Events\TestingEvent());
 //     return 'Event has been sent!';
 // });
+
+
+Route::get('/export/absen/excel', [RiwayatAbsen::class, 'riwayatAbsenExcel'])->name('export.absen.excel');
+
+Route::get('/export/absen/pdf', [RiwayatAbsen::class, 'exportPdf'])->name('export.absen.pdf');
+

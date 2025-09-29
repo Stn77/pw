@@ -8,11 +8,11 @@
     @endpush
 
     <div class="d-flex flex-column">
-        <div class="d-flex mb-4">
-            <div class="filter d-flex form-group flex-row">
+        <div class="mb-4 d-flex">
+            <div class="flex-row filter d-flex form-group">
                 @hasanyrole('admin')
                 <div class="jurusan-f me-2 form-group">
-                    {{-- <label for="kelas" class="form-label mb-0">Kelas</label> --}}
+                    {{-- <label for="kelas" class="mb-0 form-label">Kelas</label> --}}
                     <select class="form-select form-select-sm me-2" name="kelas" id="kelas" aria-placeholder="konz">
                         <option value="">kelas</option>
                         <option value="x">X</option>
@@ -21,7 +21,7 @@
                     </select>
                 </div>
                 <div class="kelas-f me-2 form-group">
-                    {{-- <label for="jurusan" class="form-label mb-0">Jurusan</label> --}}
+                    {{-- <label for="jurusan" class="mb-0 form-label">Jurusan</label> --}}
                     <select class="form-select form-select-sm me-2" name="jurusan" id="jurusan">
                         <option value="">Jurusan</option>
                         <option value="pplg">PPLG</option>
@@ -48,7 +48,7 @@
         </div>
         <div class="table-responsive">
             <table class="table mt-2 table-striped table-bordered" id="absensiswa">
-                <thead class="text-light table-dark mt-2" style="background-color: rgb(32, 32, 32);"></thead>
+                <thead class="mt-2 text-light table-dark" style="background-color: rgb(32, 32, 32);"></thead>
             </table>
         </div>
     </div>
@@ -62,7 +62,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group mb-3">
+                    <div class="mb-3 form-group">
                         <label for="file" class="form-label">Format File</label>
                         <select class="form-select" name="file" id="file">
                             <option value="x" selected disabled>Pilih Format File</option>
@@ -70,11 +70,11 @@
                             <option value="pdf">Pdf</option>
                         </select>
                     </div>
-                    <div class="form-group mb-3">
+                    <div class="mb-3 form-group">
                         <label for="tanggal-awal" class="form-label">Tanggal Awal</label>
                         <input class="form-control" name="tanggal-awal" id="tanggal-awal" type="date" max="{{now()->toDateString()}}">
                     </div>
-                    <div class="form-group mb-3">
+                    <div class="mb-3 form-group">
                         <label for="tanggal-akhir" class="form-label">Tanggal Akhir</label>
                         <input class="form-control" name="tanggal-akhir" id="tanggal-awal" type="date" max="{{now()->toDateString()}}">
                     </div>
@@ -95,7 +95,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group mb-3">
+                    <div class="mb-3 form-group">
                         <label for="file" class="form-label">Format File</label>
                         <select class="form-select" name="file" id="file">
                             <option value="x" selected disabled>Pilih Format File</option>
@@ -103,11 +103,11 @@
                             <option value="pdf">Pdf</option>
                         </select>
                     </div>
-                    <div class="form-group mb-3">
+                    <div class="mb-3 form-group">
                         <label for="tanggal-awal" class="form-label">Tanggal Awal</label>
                         <input class="form-control" name="tanggal-awal" id="tanggal-awal" type="date" max="{{now()->toDateString()}}">
                     </div>
-                    <div class="form-group mb-3">
+                    <div class="mb-3 form-group">
                         <label for="tanggal-akhir" class="form-label">Tanggal Akhir</label>
                         <input class="form-control" name="tanggal-akhir" id="tanggal-awal" type="date" max="{{now()->toDateString()}}">
                     </div>
@@ -120,39 +120,53 @@
         </div>
     </div>
     @push('script')
-    <script>
-        $(document).ready(() => {
-            let absenSiswaTable = $('#absensiswa').DataTable({
-                processing: true,
-                pageLength: 50,
-                serverSide: true,
-                autoFill: false,
-                ajax: {
-                    url: '{{route('data.absen.get')}}',
+<script>
+    $(document).ready(() => {
+        let absenSiswaTable = $('#absensiswa').DataTable({
+            processing: true,
+            pageLength: 50,
+            serverSide: true,
+            autoFill: false,
+            ajax: {
+                url: '{{ route('data.absen.get') }}',
+            },
+            columns: [
+                {
+                    data: 'DT_RowIndex',
+                    title: 'No',
+                    orderable: false,
+                    searchable: false
                 },
-                columns: [
-                    {
-                        data: null,
-                        title: 'No',
-                        name: 'DT_RowIndex',
-                        orderable: false,
-                        searchable: false,
-                        render: function (data, type, row, meta) {
-                            return meta.row + meta.settings._iDisplayStart + 1;
-                        }
-                    },
-                    {data: 'user.siswa.nisn', title: 'NISN'},
-                    {data: 'user.siswa.name', title: 'Nama Siswa'},
-                    {data: 'hari', title: 'Hari'},
-                    {data: 'created_at', title: 'Tanggal'},
-                    {data: 'user.siswa.jurusan.name', title: 'Jurusan'},
-                    {data: 'user.siswa.kelas.name', title: 'kelas'},
-                    {data: 'waktu', title: 'Waktu'},
-                    {data: 'action', title: 'Ket', orderable: false, searchable: false  },
-                ]
-            })
-        })
+                { data: 'nisn', title: 'NISN' },
+                { data: 'nama', title: 'Nama Siswa' },
+                { data: 'hari', title: 'Hari' },
+                { data: 'created_at', title: 'Tanggal' },
+                { data: 'jurusan', title: 'Jurusan' },
+                { data: 'kelas', title: 'Kelas' },
+                { data: 'waktu', title: 'Waktu' },
+                { data: 'action', title: 'Ket', orderable: false, searchable: false },
+            ]
+        });
+    });
 
-    </script>
+$('#exportmodaladmin .btn-primary').on('click', function () {
+    let format = $('#file').val();
+    let awal = $('#tanggal-awal').val();
+    let akhir = $('#tanggal-akhir').val();
+
+    if (!format || format === 'x') {
+        alert("Pilih format file dulu!");
+        return;
+    }
+
+    if (format === 'excel') {
+        window.location.href = "{{ route('export.absen.excel') }}" + "?tanggal_awal=" + awal + "&tanggal_akhir=" + akhir;
+    } else if (format === 'pdf') {
+        window.location.href = "{{ route('export.absen.pdf') }}" + "?tanggal_awal=" + awal + "&tanggal_akhir=" + akhir;
+    }
+});
+
+</script>
+
     @endpush
 </x-layouts.app>

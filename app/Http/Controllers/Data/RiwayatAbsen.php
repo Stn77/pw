@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
 use App\Models\RiwayatAbsen as ModelsRiwayatAbsen;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
+use App\Export\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class RiwayatAbsen extends Controller
 {
@@ -18,38 +18,52 @@ class RiwayatAbsen extends Controller
 
     public function getData()
     {
-        $teacherRole = Auth::user()->hasRole('teacher');
-        if($teacherRole){
-            $teacherData = User::where('id', Auth::user()->id)->with('');
-        }
-        // dd($teacherData);
-
-        $data = ModelsRiwayatAbsen::with('user.siswa', 'user.siswa.kelas', 'user.siswa.jurusan')->get();
+        $data = ModelsRiwayatAbsen::with('user.siswa.kelas', 'user.siswa.jurusan')->get();
 
         return DataTables::of($data)
             ->addIndexColumn()
-            ->editColumn('user.siswa.name', function($row) {
-                if(!$row->user->siswa){
-                    return 'N/A';
-                }
-                return $row->user->siswa->name;
-            })
+            ->addColumn('nisn', fn($row) => $row->user->siswa->nisn ?? '-')
+            ->addColumn('nama', fn($row) => $row->user->siswa->name ?? '-')
+            ->addColumn('jurusan', fn($row) => $row->user->siswa->jurusan->name ?? '-')
+            ->addColumn('kelas', fn($row) => $row->user->siswa->kelas->name ?? '-')
+            ->editColumn('created_at', fn($row) => $row->created_at->format('d M Y'))
+            ->addColumn('waktu', fn($row) => $row->created_at->format('H:i:s'))
             ->addColumn('action', function($row) {
-                if($row->is_late === 'Terlambat'){
-                    return '<span class="badge bg-danger">'.$row->is_late.'</span>';
-                } else {
-                    return '<span class="badge bg-success">'.$row->is_late.'</span>';
-                }
+                return $row->is_late === 'Terlambat'
+                    ? '<span class="badge bg-danger">'.$row->is_late.'</span>'
+                    : '<span class="badge bg-success">'.$row->is_late.'</span>';
             })
-            ->editColumn('created_at', function($row) {
-                return $row->created_at->format('d M Y');
-            })
-            ->addColumn('waktu', function($row) {
-                return $row->created_at->format('H:i:s');
-            })
-            ->editColumn('user.siswa.jurusan.name', function($row){
-                return strtoupper($row->user->siswa->jurusan->name) ;
-            })
+            ->rawColumns(['action'])
             ->make(true);
     }
+
+    public function riwayatAbsenExcel()
+    {
+        $data = ModelsRiwayatAbsen::with('user.siswa.kelas', 'user.siswa.jurusan')->get();
+        return Excel::riwayatAbsen($data);
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $tanggalAwal = $request->input('tanggal_awal');
+        $tanggalAkhir = $request->input('tanggal_akhir');
+
+        $query = ModelsRiwayatAbsen::with('user.siswa.kelas', 'user.siswa.jurusan');
+
+        if ($tanggalAwal && $tanggalAkhir) {
+            $query->whereBetween('tanggal', [$tanggalAwal, $tanggalAkhir]);
+        }
+
+        $data = $query->get();
+
+        $pdf = Pdf::loadView('data.export_pdf', compact('data'))
+            ->setPaper('a4', 'landscape');
+            // dd($data);
+
+        $fileName = 'riwayat_absen_' . now()->format('Ymd_His') . '.pdf';
+
+        return $pdf->stream($fileName);
+
+    }
+
 }
