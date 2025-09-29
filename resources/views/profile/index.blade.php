@@ -34,7 +34,14 @@
 
                     <div class="form-group mb-3 col">
                         <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
+                        @hasanyrole('user|admin')
                         <input type="text" name="nama_lengkap" class="form-control" value="{{$data->siswa->name ?? '-'}}" readonly>
+                        @endhasanyrole
+
+                        @hasanyrole('teacher')
+                        <input type="text" name="nama_lengkap" class="form-control" value="{{$data->guru->name ?? '-'}}" readonly>
+                        @endhasanyrole
+
                     </div>
 
                     <div class="form-group mb-3 col">
@@ -42,6 +49,7 @@
                         <input type="text" name="username" class="form-control" value="{{$data->username}}" readonly>
                     </div>
 
+                    @hasanyrole('user')
                     <div class="row">
                         <div class="form-group mb-3 col">
                             <label for="kelas" class="form-label">Kelas</label>
@@ -52,6 +60,7 @@
                             <input type="text" name="jurusan" class="form-control" value="{{$data->siswa->jurusan->name ?? '-'}}" readonly>
                         </div>
                     </div>
+                    @endhasanyrole
 
                     <div class="col">
                         <label for=""></label>

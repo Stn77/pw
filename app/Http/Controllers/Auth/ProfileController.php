@@ -12,7 +12,17 @@ class ProfileController extends Controller
     public function index()
     {
         $data = []; // Fetch or prepare your data here
-
+        if(Auth::user()->hasRole('teacher')){
+            $userId = Auth::user()->id;
+            $userData = User::with('guru', 'guru.pivot.kelas', 'guru.pivot.jurusan')->where('id', $userId)->first();
+            $data = $userData;
+            return view('profile.index', compact('data'));
+        }else if(Auth::user()->hasRole('user')){
+            $userId = Auth::user()->id;
+            $userData = User::with('siswa', 'siswa.kelas', 'siswa.jurusan')->where('id', $userId)->first();
+            $data = $userData;
+            return view('profile.index', compact('data'));
+        }
         $userId = Auth::user()->id;
         $userData = User::with('siswa', 'siswa.kelas', 'siswa.jurusan')->where('id', $userId)->first();
         $data = $userData;
