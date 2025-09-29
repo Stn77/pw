@@ -38,27 +38,34 @@ Route::prefix('profile')->middleware('auth')->group(function () {
     })->name('profile.password.change');
 });
 
-Route::prefix('data')->middleware('auth')->group(function(){
-    Route::get('/students/account', [AkunSiswa::class, 'index'])->name('data.students.account');
-    Route::get('/absen', [RiwayatAbsen::class, 'index'])->name('data.absen');
+Route::prefix('absen')->middleware('auth')->group(function(){
+    Route::get('/', [RiwayatAbsen::class, 'index'])->name('data.absen');
+    Route::get('/get', [RiwayatAbsen::class, 'getData'])->name('data.absen.get');
 });
 
 Route::prefix('data/guru')->middleware(['auth', 'role:admin'])->group(function(){
     Route::get('/', [Guru::class, 'index'])->name('data.guru.index');
-    Route::get('/create', [Guru::class, 'create'])->name('data.guru.create');
+    Route::get('/get', [Guru::class, 'getData'])->name('data.guru.get');
+    Route::post('/create', [Guru::class, 'create'])->name('data.guru.create');
     Route::get('/edit/{id}', [Guru::class, 'edit'])->name('data.guru.edit');
     Route::post('/update', [Guru::class, 'update'])->name('data.guru.update');
-    Route::get('/get-image/{id}', [Guru::class, 'getImage'])->name('data.guru.image');
+    Route::delete('/delete/{id}', [Guru::class, 'delete'])->name('data.guru.delete');
+
+    Route::get('/get-data/{id}', [Guru::class, 'getSingleData'])->name('data.guru.sigle');
     Route::post('/store', [Guru::class, 'store'])->name('data.guru.store');
     Route::post('/import', [Guru::class, 'import'])->name('data.guru.import');
-    Route::get('/get', [Guru::class, 'getData'])->name('data.guru.get');
     Route::get('/template', [Guru::class, 'getTemplate'])->name('data.guru.template');
 });
 
 Route::prefix('data/siswa')->middleware(['auth', 'role:admin|guru'])->group(function(){
-    Route::get('/students/get', [AkunSiswa::class, 'getData'])->name('akun.siswa.get');
-    Route::get('/absen/get', [RiwayatAbsen::class, 'getData'])->name('data.absen.get');
+    Route::get('/', [AkunSiswa::class, 'index'])->name('data.siswa.index');
+    Route::get('/get', [AkunSiswa::class, 'getData'])->name('akun.siswa.get');
+    Route::get('/edit/{id}', [AkunSiswa::class, 'edit'])->name('data.siswa.edit');
+    Route::post('/update', [AkunSiswa::class, 'update'])->name('data.siswa.update');
+    Route::delete('/delete/{id}',[AkunSiswa::class, 'delete'])->name('data.siswa.delete');
 
+    Route::get('/get-data/{id}', [AkunSiswa::class, 'getSingleData'])->name('data.siswa.sigle');
+    Route::post('/store', [AkunSiswa::class, 'store'])->name('akun.siswa.store');
     Route::post('/import', [AkunSiswa::class, 'import'])->name('data.siswa.import');
     Route::get('/template', [AkunSiswa::class, 'getTemplate'])->name('data.siswa.template');
 });
@@ -68,18 +75,6 @@ Route::middleware('auth')->group(function (){
     Route::post('/scanner/scan', [Scanner::class, 'scan'])->name('scanner.scan');
     Route::get('/qrcode', [QrGenerator::class, 'generate'])->name('generate.qr');
 });
-
-Route::post('/students/store', [AkunSiswa::class, 'store'])->name('akun.siswa.store');
-
-// Route::post('');
-
-// Route::get('/test-broadcast', fn() => view('test-broadcast'));
-
-// Route::get('/trigger-event', function () {
-//     event(new \App\Events\TestingEvent());
-//     return 'Event has been sent!';
-// });
-
 
 Route::get('/export/absen/excel', [RiwayatAbsen::class, 'riwayatAbsenExcel'])->name('export.absen.excel');
 
