@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Export\Excel;
 use App\Http\Controllers\Controller;
 use App\Import\ExcelImport;
 use App\Import\Template;
+use App\Models\Siswa;
 use App\Models\User;
 use Exception;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -142,12 +145,104 @@ class AkunSiswa extends Controller
                 'message' => 'Data Success Create',
                 'data' => $request->all()
             ]);
+        } catch (Validator $e){
+            Log::error('error validasi data ' . $e->getMessageBag());
+
+            return response()->json([
+                'status' => 422,
+                'message' => 'input data harus lengkap',
+                'data' => $request->all()
+            ]);
         } catch (\Exception $e) {
             Log::error("message: " . $e->getMessage());
             return response()->json([
                 'status' => 500,
                 'message' => 'Server Error',
                 'data' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function edit($id)
+    {
+        $siswa = Siswa::with('user')->find($id);
+
+        return view('data.siswa-edit', compact(['siswa', 'id']));
+    }
+
+    public function update(Request $request)
+    {
+        try{
+
+            $siswa = Siswa::with('user')->find($request->idSiswa);
+
+            $userImage = $siswa->user->foto_profile;
+
+            if($request->hasFile('image')){
+                if($userImage){
+                    $oldImagePath = 'public/profile-images/' . $userImage;
+                    if (Storage::exists($oldImagePath)) {
+                        Storage::delete($oldImagePath);
+                    }
+                }
+
+                $imageName = time() . generateRandomString(12) . '.' . $request->image->extension();
+                $request->image->storeAs('profile-images', $imageName, 'public');
+
+                $siswa->user->foto_profile = $imageName;
+                $siswa->user->save();
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Profile berhasil diperbarui!',
+                'url' => asset('storage/profile-images/' . $siswa->user->foto_profile)
+            ]);
+
+        }catch(Exception $e){
+            Log::error('error update siswa: '.$e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'error',
+                'detail' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function getSingleData($id)
+    {
+        $imageUrl = '';
+        $data = Siswa::with('user', 'kelas', 'jurusan')->find($id);
+        Log::debug($data);
+        if($data->user->foto_rofile){
+            $imageUrl = asset('storage/profile-images/' . $data->user->foto_profile);
+        }else{
+            $imageUrl = asset('img/default-profile.png');
+        }
+
+        return response()->json([
+            'success' => true,
+            'image' => $imageUrl,
+            'nisn' => $data->nisn,
+            'name' => $data->name,
+            'email' => $data->email ?? '-',
+            'kelas' => strtoupper($data->kelas->name),
+            'jurusan' => strtoupper($data->jurusan->name)
+        ]);
+    }
+
+    public function delete($id){
+        try{
+            $data = User::with('siswa')->find($id);
+            $data->siswa->delete();
+            $data->delete();
+            return response()->json([
+                'success' => true
+            ]);
+        }catch(Exception $e){
+            Log::error($e->getMessage());
+            return response()->json([
+                'success' => false
             ]);
         }
     }

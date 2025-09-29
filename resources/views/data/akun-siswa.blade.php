@@ -110,6 +110,86 @@
         .submit-multi-user{
             gap: 1rem;
         }
+
+        .top {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .foto-profile-c {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 3px solid #dee2e6;
+        }
+
+        .foto-profile-c img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .data-inti {
+            flex: 1;
+        }
+
+        .daftar-kelas {
+            margin: 0 20px 20px;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 1220px) {
+            .top {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .foto-profile-c {
+                width: 180px;
+                height: 180px;
+            }
+
+            .data-inti {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .modal-dialog {
+                margin: 10px;
+            }
+
+            .foto-profile-c {
+                width: 150px;
+                height: 150px;
+            }
+
+            .top {
+                padding: 15px;
+            }
+
+            .daftar-kelas {
+                margin: 0 10px 15px;
+                padding: 15px !important;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .foto-profile-c {
+                width: 120px;
+                height: 120px;
+            }
+
+            .top {
+                padding: 10px;
+            }
+        }
     </style>
     @endpush
     <div class="container-fluid py-3">
@@ -130,6 +210,7 @@
         </div>
     </div>
 
+    {{-- add modal --}}
     <div class="modal fade" id="addmodal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
@@ -163,60 +244,60 @@
                                 <div class="tab-pane fade show active" id="satu-data-content" role="tabpanel"
                                     aria-labelledby="satu-data-tab">
                                     <h4>Form Tambah Satu Data Siswa</h4>
-                                        <form id="siswaForm" novalidate>
-                                            <div class="modal-body">
-                                                <div class="form-group mb-3 col">
-                                                    <label for="nama" class="form-label">Nama <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama Siswa" required>
-                                                    <div class="invalid-feedback">Nama harus diisi</div>
+                                    <form id="siswaForm" novalidate>
+                                        <div class="modal-body">
+                                            <div class="form-group mb-3 col">
+                                                <label for="nama" class="form-label">Nama <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama Siswa" required>
+                                                <div class="invalid-feedback">Nama harus diisi</div>
+                                            </div>
+                                            <div class="form-group mb-3 col">
+                                                <label for="nisn" class="form-label">NISN <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="nisn" name="nisn" placeholder="NISN Siswa" required>
+                                                <div class="invalid-feedback">NISN harus diisi</div>
+                                            </div>
+                                            <div class="form-group mb-3 col">
+                                                <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="username" name="username" placeholder="Username Siswa" required>
+                                                <div class="invalid-feedback">Username harus diisi</div>
+                                            </div>
+                                            <div class="d-flex flex-column flex-md-row">
+                                                <div class="form-group mb-3 col me-md-2">
+                                                    <label for="kelas" class="form-label">Kelas <span class="text-danger">*</span></label>
+                                                    <select class="form-select" name="kelas" id="kelas" required>
+                                                        <option value="" selected disabled>Pilih Kelas</option>
+                                                        <option value="1">X</option>
+                                                        <option value="2">XI</option>
+                                                        <option value="3">XII</option>
+                                                    </select>
+                                                    <div class="invalid-feedback">Kelas harus dipilih</div>
                                                 </div>
-                                                <div class="form-group mb-3 col">
-                                                    <label for="nisn" class="form-label">NISN <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" id="nisn" name="nisn" placeholder="NISN Siswa" required>
-                                                    <div class="invalid-feedback">NISN harus diisi</div>
-                                                </div>
-                                                <div class="form-group mb-3 col">
-                                                    <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" id="username" name="username" placeholder="Username Siswa" required>
-                                                    <div class="invalid-feedback">Username harus diisi</div>
-                                                </div>
-                                                <div class="d-flex flex-column flex-md-row">
-                                                    <div class="form-group mb-3 col me-md-2">
-                                                        <label for="kelas" class="form-label">Kelas <span class="text-danger">*</span></label>
-                                                        <select class="form-select" name="kelas" id="kelas" required>
-                                                            <option value="" selected disabled>Pilih Kelas</option>
-                                                            <option value="1">X</option>
-                                                            <option value="2">XI</option>
-                                                            <option value="3">XII</option>
-                                                        </select>
-                                                        <div class="invalid-feedback">Kelas harus dipilih</div>
-                                                    </div>
-                                                    <div class="form-group mb-3 col ms-md-2">
-                                                        <label for="jurusan" class="form-label">Jurusan <span class="text-danger">*</span></label>
-                                                        <select class="form-select" name="jurusan" id="jurusan" required>
-                                                            <option value="" selected disabled>Pilih Jurusan</option>
-                                                            <option value="1">MP</option>
-                                                            <option value="2">AK</option>
-                                                            <option value="3">BD</option>
-                                                            <option value="4">TSM</option>
-                                                            <option value="5">DKV</option>
-                                                            <option value="6">PPLG</option>
-                                                            <option value="7">TKKR</option>
-                                                        </select>
-                                                        <div class="invalid-feedback">Jurusan harus dipilih</div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group mb-3 col">
-                                                    <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
-                                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password Siswa" required>
-                                                    <div class="invalid-feedback">Password harus diisi</div>
+                                                <div class="form-group mb-3 col ms-md-2">
+                                                    <label for="jurusan" class="form-label">Jurusan <span class="text-danger">*</span></label>
+                                                    <select class="form-select" name="jurusan" id="jurusan" required>
+                                                        <option value="" selected disabled>Pilih Jurusan</option>
+                                                        <option value="1">MP</option>
+                                                        <option value="2">AK</option>
+                                                        <option value="3">BD</option>
+                                                        <option value="4">TSM</option>
+                                                        <option value="5">DKV</option>
+                                                        <option value="6">PPLG</option>
+                                                        <option value="7">TKKR</option>
+                                                    </select>
+                                                    <div class="invalid-feedback">Jurusan harus dipilih</div>
                                                 </div>
                                             </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Tambahkan</button>
+                                            <div class="form-group mb-3 col">
+                                                <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
+                                                <input type="password" class="form-control" id="password" name="password" placeholder="Password Siswa" required>
+                                                <div class="invalid-feedback">Password harus diisi</div>
                                             </div>
-                                        </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Tambahkan</button>
+                                        </div>
+                                    </form>
                                 </div>
                                 <div class="tab-pane fade" id="banyak-data-content" role="tabpanel" aria-labelledby="banyak-data-tab">
                                     <form action="" class="form-import-excel" method="POST" enctype="multipart/form-data" id="upload-form">
@@ -312,8 +393,83 @@
         </div>
     </div>
 
+    {{-- info modal --}}
+<div class="modal fade" id="infoSiswaModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Informasi Siswa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="top">
+                    <div class="foto-profile-c">
+                        <img src="" alt="fotoGuru" id="foto-guru">
+                    </div>
+                    <div class="data-inti">
+                        <div class="form-group mb-3">
+                            <label class="form-label" for="nama-display">Nama Siswa</label>
+                            <input class="form-control" readonly type="text" name="nama-display" id="nama-display">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="form-label" for="nisn-display">NISN Siswa</label>
+                            <input class="form-control" readonly type="text" name="nisn-display" id="nisn-display">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="form-label" for="email-display">Email Siswa</label>
+                            <input class="form-control" readonly type="text" name="email-display" id="email-display">
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group mb-3 col">
+                                <label for="kelas-display" class="form-label">Kelas</label>
+                                <input type="text" name="kelas-display" id="kelas-display" class="form-control" readonly>
+                            </div>
+                            <div class="form-group mb-3 col">
+                                <label for="jurusan-display" class="form-label">Jurusan</label>
+                                <input type="text" name="jurusan-display" id="jurusan-display" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="daftar-kelas rounded p-4 border" id="daftar-kelas">
+                    <!-- Daftar kelas akan ditampilkan di sini -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- comfirm delete --}}
+<div class="modal fade" id="confirmDelete" tabindex="-1" aria-labelledby="comfirmDelete" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Konfirmasi Hapus Data</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="deleteData">
+                    <input type="text" hidden id="idSiswa">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Hapus</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
     @push('script')
     <script>
+        var userRoute = "{{ route('data.siswa.sigle', ['id' => ':id']) }}";
+        var deleteRoute = "{{ route('data.siswa.delete', ['id' => ':id']) }}";
+        // var idDelete = '';
         $(document).ready(() => {
             // Inisialisasi DataTables
             let akunSiswaTable = $('#akun-siswa').DataTable({
@@ -348,10 +504,13 @@
                         render: function(data, type, row) {
                             return `
                                 <div class="btn-group">
-                                    <button class="btn btn-sm btn-warning edit-btn" data-id="${row.id}">
+                                    <a href="{{route('data.siswa.edit', '')}}/ ${row.id}" class="btn btn-sm btn-primary info-btn" data-id="${row.id}">
                                         <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <button class="btn btn-sm btn-warning info-btn" onclick="infoSiswa(${row.id})" data-id="${row.id}">
+                                        <i class="bi bi-info"></i>
                                     </button>
-                                    <button class="btn btn-sm btn-danger delete-btn" data-id="${row.id}">
+                                    <button class="btn btn-sm btn-danger delete-btn" data-id="${row.id}" onclick="confirmDelete(${row.id})">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </div>
@@ -424,7 +583,93 @@
                     }
                 });
             });
+
+            $('#deleteData').submit(function(e) {
+                e.preventDefault()
+
+                const formData = new FormData(this)
+                const submitBtn = $('#submitBtn')
+
+                submitBtn.prop('disabled', true)
+
+                $.ajax({
+                    url: deleteRoute.replace(':id', $('#idSiswa').val()),
+                    type: 'DELETE',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response){
+                        if(response.success){
+                            console.log('data dihapus')
+
+                            showNotifCreate('Data Siswa Dihapus', 'success')
+                            $('#confirmDelete').modal('hide')
+                            akunSiswaTable.ajax.reload();
+                        }
+                    },
+                    error: function(xhr) {
+                        let errorMessage = 'Terjadi kesalahan saat mengupload!';
+                        console.log(xhr)
+
+                        if (xhr.responseJSON && xhr.responseJSON.errors) {
+                            // Handle validation errors
+                            const errors = xhr.responseJSON.errors;
+                            if (errors.image) {
+                                errorMessage = errors.image[0];
+                            } else if (xhr.responseJSON.message) {
+                                errorMessage = xhr.responseJSON.message;
+                            }
+                        }
+
+                    }
+                })
+            })
         });
+
+        function infoSiswa(id){
+            $('#infoSiswaModal').modal('show')
+            loadImageFromLaravel(id)
+        }
+
+        function loadImageFromLaravel(id){
+            var url = userRoute.replace(':id', id)
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response){
+                    if(response.success){
+                        // displayImage(response.image)
+                        // console.log(response.)
+                        $('#foto-guru').attr('src', response.image)
+                        $('#nama-display').val(response.name)
+                        $('#nisn-display').val(response.nisn)
+                        $('#email-display').val(response.email)
+                        $('#kelas-display').val(response.kelas)
+                        $('#jurusan-display').val(response.jurusan)
+                    }else{
+                        console.log('ada yang salah')
+                    }
+                },
+                error: function(xhr, status, error){
+                    console.error("Error " + error)
+                    alert("an error from request")
+                }
+            })
+        }
+
+        function confirmDelete(id){
+            $('#confirmDelete').modal('show')
+            $('#idSiswa').val(id)
+        }
+
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
