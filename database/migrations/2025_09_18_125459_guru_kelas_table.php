@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreign('guru_id')->references('id')->on('gurus')->onDelete('cascade');
             $table->foreign('kelas_id')->references('id')->on('kelas')->onDelete('cascade');
             $table->foreign('jurusan_id')->references('id')->on('jurusans')->onDelete('cascade');
+            $table->softDeletes();
         });
     }
 

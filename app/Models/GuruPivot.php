@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class GuruPivot extends Pivot
 {
-    //
+    use SoftDeletes;
+    
     protected $table = 'guru_kelas';
     protected $fillable = ['guru_id', 'kelas_id', 'jurusan_id'];
 
