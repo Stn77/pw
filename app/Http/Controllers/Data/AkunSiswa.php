@@ -213,8 +213,7 @@ class AkunSiswa extends Controller
     {
         $imageUrl = '';
         $data = Siswa::with('user', 'kelas', 'jurusan')->find($id);
-        Log::debug($data);
-        if($data->user->foto_rofile){
+        if($data->user->foto_profile){
             $imageUrl = asset('storage/profile-images/' . $data->user->foto_profile);
         }else{
             $imageUrl = asset('img/default-profile.png');
