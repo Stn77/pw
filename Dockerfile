@@ -16,7 +16,8 @@ RUN apt-get update && apt-get install -y \
     pkg-config \
     imagemagick \
     zip \
-    unzip
+    unzip \
+    nano
 
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
@@ -32,8 +33,8 @@ RUN php -m | grep imagick || (echo "Imagick installation failed" && exit 1)
 #     && sed -i 's/rights="none" pattern="SVG"/rights="read|write" pattern="SVG"/' /etc/ImageMagick-6/policy.xml
 
 # Install Node.js dan npm
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
-    && apt-get install -y nodejs
+# RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+#     && apt-get install -y nodejs
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
