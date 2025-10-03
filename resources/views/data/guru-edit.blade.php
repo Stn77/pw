@@ -39,6 +39,13 @@
             display: none;
             margin-top: 10px;
         }
+
+        .class-c{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: left;
+            align-items: center;
+        }
     </style>
     @endpush
     <div class="w-100">
@@ -99,16 +106,62 @@
                             </div>
                         </div>
 
-                        <div class="col">
-                            <button type="submit" class="btn btn-primary" id="submitBtn">
-                                <span id="submitText">Simpan</span>
-                                <span id="loadingSpinner" class="loading">
-                                    <i class="bi bi-arrow-repeat"></i> Mengupload...
-                                </span>
-                            </button>
-                            <button type="reset" class="btn btn-warning" id="resetBtn">
-                                Reset
-                            </button>
+                        <div class="row mb-3 p-2" id="kelasContainer-m">
+                            <div class="form-group col">
+                                <label for="" class="form-label">Kelas Diajar</label>
+                                <div class="form-group border m-2 p-2 col rounded class-c" id="classContainer-current">
+                                    <!-- Tombol kelas akan ditampilkan di sini -->
+                                </div>
+                            </div>
+
+                            <div class="form-group col">
+                                <label for="" class="form-label">Dihapus</label>
+                                <div class="form-group border m-2 p-2 col rounded class-c" id="classContainer-delete">
+                                    <!-- Tombol kelas yang dihapus akan dipindahkan ke sini -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3 p-2 border rounded">
+                            <label for="" class="form-label">Tambah Kelas Diajar Baru</label>
+                            <div class="form-group col-md-5">
+                                <select id="kelas_select" class="form-control" required>
+                                    <option value="">-- Pilih Kelas --</option>
+                                    <option value="1">X</option>
+                                    <option value="2">XI</option>
+                                    <option value="3">XII</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-5">
+                                <select id="jurusan_select" class="form-control" required>
+                                    <option value="">-- Pilih Jurusan --</option>
+                                    <option value="" selected disabled>Pilih Jurusan</option>
+                                    <option value="1">MP</option>
+                                    <option value="2">AK</option>
+                                    <option value="3">BD</option>
+                                    <option value="4">TSM</option>
+                                    <option value="5">DKV</option>
+                                    <option value="6">PPLG</option>
+                                    <option value="7">TKKR</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <button type="button" class="btn btn-success w-100" id="addClassBtn">Tambah</button>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3 p-2" id="newClassesContainer">
+                            <div class="form-group col">
+                                <label for="" class="form-label">Kelas Baru (Belum Tersimpan)</label>
+                                <div class="form-group border m-2 p-2 col rounded class-c" id="classContainer-new">
+                                    </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col">
+                                <button type="button" class="btn btn-primary" id="submitKelas">Simpan Perubahan Kelas</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -287,6 +340,210 @@
                     }
                 });
             });
+        });
+    </script>
+    <script>
+        // Variabel untuk menyimpan data kelas
+        let kelasData = {
+            current: [], // Menyimpan objek kelas {id, nama} (ID GuruPivot)
+            deleted: [], // Menyimpan objek kelas {id, nama} (ID GuruPivot)
+            new: []      // Menyimpan objek kelas baru {kelas_id, jurusan_id, nama_tampilan}
+        };
+
+        var getKelasUrl = "{{ route('data.guru.class', ['id' => ':id']) }}"
+
+        // Memuat data kelas dari server
+        $(document).ready(function() {
+            loadKelasData();
+        });
+
+        function loadKelasData() {
+            $.ajax({
+                url: getKelasUrl.replace(':id', $('#idGuru').val()),
+                method: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response){
+                    if(response.success){
+                        // Gabungkan data nama dan id menjadi array of objects
+                        let kelasWithIds = [];
+                        for(let i = 0; i < response.data.length; i++) {
+                            kelasWithIds.push({
+                                id: response.id[i],
+                                nama: response.data[i]
+                            });
+                        }
+
+                        kelasData.current = kelasWithIds;
+                        renderKelasButtons();
+                    }
+                },
+                error: function(xhr){
+                    console.log(xhr);
+                    alert('Terjadi kesalahan saat memuat data kelas');
+                }
+            });
+        }
+
+        // Render tombol kelas berdasarkan data
+        function renderKelasButtons() {
+            // Kosongkan container
+            $('#classContainer-current').empty();
+            $('#classContainer-delete').empty();
+
+            // Render kelas aktif
+            kelasData.current.forEach((kelas, index) => {
+                $('#classContainer-current').append(
+                    `<button class="btn btn-sm btn-danger m-1 btn-kelas" type="button"
+                        data-id="${kelas.id}" data-index="${index}" onclick="removeClass(${index})">
+                        ${kelas.nama} <i class="bi bi-x"></i>
+                    </button>`
+                );
+            });
+
+            // Render kelas yang dihapus
+            kelasData.deleted.forEach((kelas, index) => {
+                $('#classContainer-delete').append(
+                    `<button class="btn btn-sm btn-secondary m-1 btn-kelas" type="button"
+                        data-id="${kelas.id}" data-index="${index}" onclick="restoreClass(${index})">
+                        ${kelas.nama} <i class="bi bi-arrow-counterclockwise"></i>
+                    </button>`
+                );
+            });
+        }
+
+        // Fungsi untuk memindahkan kelas ke container "Dihapus"
+        function removeClass(index) {
+            // Pindahkan dari current ke deleted
+            const movedClass = kelasData.current.splice(index, 1)[0];
+            kelasData.deleted.push(movedClass);
+
+            // Render ulang tombol
+            renderKelasButtons();
+        }
+
+        // Fungsi untuk mengembalikan kelas ke container "Kelas Diajar"
+        function restoreClass(index) {
+            // Pindahkan dari deleted ke current
+            const movedClass = kelasData.deleted.splice(index, 1)[0];
+            kelasData.current.push(movedClass);
+
+            // Render ulang tombol
+            renderKelasButtons();
+        }
+
+        // Render tombol kelas baru berdasarkan data
+        function renderNewClassButtons() {
+            $('#classContainer-new').empty();
+
+            // Render kelas baru
+            kelasData.new.forEach((kelas, index) => {
+                $('#classContainer-new').append(
+                    `<button class="btn btn-sm btn-info m-1 btn-kelas" type="button"
+                        data-kelas-id="${kelas.kelas_id}" data-jurusan-id="${kelas.jurusan_id}"
+                        data-index="${index}" onclick="removeNewClass(${index})">
+                        ${kelas.nama} <i class="bi bi-x"></i>
+                    </button>`
+                );
+            });
+            // Gabungkan render kelas aktif, deleted, dan new agar lebih bersih:
+            renderKelasButtons();
+        }
+
+        // Fungsi untuk menghapus kelas baru dari list sebelum disimpan
+        function removeNewClass(index) {
+            kelasData.new.splice(index, 1);
+            renderNewClassButtons();
+        }
+
+        // Mengirim data ke server (HANYA ID)
+        $('#submitKelas').click(function() {
+            $(this).prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Menyimpan...');
+
+            // Siapkan data yang akan dikirim
+            const dataToSend = {
+                current_class_ids: kelasData.current.map(kelas => kelas.id), // ID Pivot untuk di-restore
+                deleted_class_ids: kelasData.deleted.map(kelas => kelas.id), // ID Pivot untuk di-soft delete
+                // Data kelas baru yang belum punya ID Pivot, hanya (kelas_id, jurusan_id)
+                new_classes: kelasData.new.map(kelas => ({
+                    kelas_id: kelas.kelas_id,
+                    jurusan_id: kelas.jurusan_id
+                })),
+                idGuru: $('#idGuru').val(),
+            };
+
+            console.log('Data yang dikirim:', dataToSend); // Untuk debugging
+
+            $.ajax({
+                url: '{{route('data.guru.setClass')}}',
+                method: 'POST',
+                data: dataToSend,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response){
+                    if(response.success){
+                        alert('Data kelas berhasil diperbarui');
+                        // Refresh data jika perlu
+                        loadKelasData();
+                    } else {
+                        alert('Gagal memperbarui data kelas: ' + response.message);
+                    }
+                },
+                error: function(xhr){
+                    console.log(xhr);
+                    alert('Terjadi kesalahan saat mengirim data');
+                },
+                complete: function() {
+                    // Kembalikan state tombol
+                    $('#submitKelas').prop('disabled', false).html('Simpan Perubahan Kelas');
+                }
+            });
+        });
+
+        // Event Listener untuk tombol Tambah Kelas Baru
+        $('#addClassBtn').click(function() {
+            const kelasId = $('#kelas_select').val();
+            const kelasNama = $('#kelas_select option:selected').text();
+            const jurusanId = $('#jurusan_select').val();
+            const jurusanNama = $('#jurusan_select option:selected').text();
+
+            if (kelasId && jurusanId) {
+                const newClass = {
+                    kelas_id: kelasId,
+                    jurusan_id: jurusanId,
+                    nama: kelasNama.toUpperCase() + ' ' + jurusanNama.toUpperCase()
+                };
+
+                // Cek duplikasi di current (sudah ada)
+                const isCurrentDuplicate = kelasData.current.some(c => c.nama === newClass.nama);
+                // Cek duplikasi di new (kelas baru yang belum tersimpan)
+                const isNewDuplicate = kelasData.new.some(c => c.nama === newClass.nama);
+
+                if (isCurrentDuplicate || isNewDuplicate) {
+                    alert('Kelas ' + newClass.nama + ' sudah ada di daftar.');
+                    return;
+                }
+
+                // Cek duplikasi di deleted (jika ada, restore saja daripada buat baru)
+                const deletedIndex = kelasData.deleted.findIndex(d => d.nama === newClass.nama);
+                if (deletedIndex !== -1) {
+                    restoreClass(deletedIndex); // Panggil fungsi restore yang sudah ada
+                    alert('Kelas ' + newClass.nama + ' sudah terdaftar sebelumnya. Berhasil dikembalikan.');
+                } else {
+                    kelasData.new.push(newClass);
+                }
+
+                // Kosongkan selection
+                $('#kelas_select').val('');
+                $('#jurusan_select').val('');
+
+                // Render ulang
+                renderNewClassButtons();
+            } else {
+                alert('Mohon pilih Kelas dan Jurusan.');
+            }
         });
     </script>
     @endpush

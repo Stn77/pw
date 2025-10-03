@@ -55,6 +55,8 @@ Route::prefix('data/guru')->middleware(['auth', 'role:admin'])->group(function()
     Route::post('/store', [Guru::class, 'store'])->name('data.guru.store');
     Route::post('/import', [Guru::class, 'import'])->name('data.guru.import');
     Route::get('/template', [Guru::class, 'getTemplate'])->name('data.guru.template');
+    Route::get('/kelas/{id}', [Guru::class, 'getClass'])->name('data.guru.class');
+    Route::post('/kelas/update', [Guru::class, 'setClass'])->name('data.guru.setClass');
 });
 
 Route::prefix('data/siswa')->middleware(['auth', 'role:admin|guru'])->group(function(){
