@@ -25,29 +25,46 @@
     <div class="d-flex m-c">
         <div class=" mx-auto">
             <div class="mx-auto overflow-hidden rounded-circle ratio ratio-1x1 p-2 d-flex justify-content-center mt-5 profile-pic">
-                <img data-visualcompletion="media-vc-image" class="" alt="Mungkin gambar terompet dan klarinet" referrerPolicy="origin-when-cross-origin" src="https://scontent-cgk1-2.xx.fbcdn.net/v/t39.30808-6/515438128_1280212873642797_1749514787639101992_n.jpg?_nc_cat=108&amp;ccb=1-7&amp;_nc_sid=6ee11a&amp;_nc_eui2=AeG-0dPA8-0tBNSicMBzc_QCBk_1bSVBSSYGT_VtJUFJJu9u8SES0BblghIpyzu7reJm-qJLCiOKmSJAELaO7_jm&amp;_nc_ohc=EkyusGuFgBYQ7kNvwEav24J&amp;_nc_oc=Adk11fKgavfomrb_ociYQMpTDDkzp-HTmBGOLeA7mjg_krPmB9ufRGRucBdWG9rTs7w&amp;_nc_zt=23&amp;_nc_ht=scontent-cgk1-2.xx&amp;_nc_gid=pFWFKn0voHp7zdWTDEqKnw&amp;oh=00_AfaAH7de1gCbUg64EqAV3hL4hBWF96SPbh3wX5P5wJgGlQ&amp;oe=68D3F09D"/>
+                <img src="{{$data->foto_profile ? asset('storage/foto-profile' . $data->foto_profile) : asset('img/default-profile.png')}}" alt="">
             </div>
         </div>
         <div class="info">
             <div class="p-2">
                 <div class="form border shadow-sm rounded-2 p-2">
 
-                    <div class="form-group mb-3 col">
-                        <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
-                        @hasanyrole('user|admin')
-                        <input type="text" name="nama_lengkap" class="form-control" value="{{$data->siswa->name ?? '-'}}" readonly>
-                        @endhasanyrole
+                    <div class="row">
+                        <div class="form-group mb-3 col">
+                            <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
+                            <input type="text" name="nama_lengkap" class="form-control" value="{{$data->name ?? '-'}}" readonly>
+                        </div>
 
-                        @hasanyrole('teacher')
-                        <input type="text" name="nama_lengkap" class="form-control" value="{{$data->guru->name ?? '-'}}" readonly>
-                        @endhasanyrole
-
+                        <div class="form-group mb-3 col">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" name="username" class="form-control" value="{{$data->username}}" readonly>
+                        </div>
                     </div>
 
-                    <div class="form-group mb-3 col">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" name="username" class="form-control" value="{{$data->username}}" readonly>
+
+                    @hasanyrole('teacher')
+                    <input type="text" hidden id="idGuru" value="{{$data->guru->id}}">
+                    <div class="row">
+                        <div class="form-group mb-3 col">
+                            <label for="username" class="form-label">NIP</label>
+                            <input type="text" name="username" class="form-control" value="{{$data->guru->nip}}" readonly>
+                        </div>
+                        <div class="form-group mb-3 col">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="text" name="email" class="form-control" value="{{$data->email}}" readonly>
+                        </div>
                     </div>
+
+                    <div class="form-group col">
+                        <label for="" class="form-label">Kelas Diajar</label>
+                        <div class="form-group border m-2 p-2 col rounded class-c" id="classContainer-current">
+                            <!-- Tombol kelas akan ditampilkan di sini -->
+                        </div>
+                    </div>
+                    @endhasanyrole
 
                     @hasanyrole('user')
                     <div class="row">
@@ -73,4 +90,65 @@
             </div>
         </div>
     </div>
+
+    @push('script')
+    @hasanyrole('teacher')
+    <script>
+        // Variabel untuk menyimpan data kelas
+        let kelasData = {
+            current: [], // Menyimpan objek kelas {id, nama} (ID GuruPivot)
+            deleted: [], // Menyimpan objek kelas {id, nama} (ID GuruPivot)
+            new: []      // Menyimpan objek kelas baru {kelas_id, jurusan_id, nama_tampilan}
+        };
+
+        var getKelasUrl = "{{ route('data.guru.class', ['id' => ':id']) }}"
+
+        $(document).ready(function () {
+            loadDataKelas()
+        })
+
+        function loadDataKelas() {
+            $.ajax({
+                url: getKelasUrl.replace(':id', $('#idGuru').val()),
+                method: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response){
+                    if(response.success){
+                        // Gabungkan data nama dan id menjadi array of objects
+                        let kelasWithIds = [];
+                        for(let i = 0; i < response.data.length; i++) {
+                            kelasWithIds.push({
+                                id: response.id[i],
+                                nama: response.data[i]
+                            });
+                        }
+
+                        kelasData.current = kelasWithIds;
+                        renderKelasButtons();
+                    }
+                },
+                error: function(xhr){
+                    console.log(xhr);
+                    // alert('Terjadi kesalahan saat memuat data kelas');
+                }
+            });
+        }
+
+        function renderKelasButtons() {
+
+            kelasData.current.forEach((kelas, index) => {
+                $('#classContainer-current').append(
+                    `<button class="btn btn-sm btn-primary m-1 btn-kelas" type="button"
+                        data-id="${kelas.id}" data-index="${index}" onclick="removeClass(${index})">
+                        ${kelas.nama}
+                    </button>`
+                );
+                console.log()
+            });
+        }
+    </script>
+    @endhasanyrole
+    @endpush
 </x-layouts.app>

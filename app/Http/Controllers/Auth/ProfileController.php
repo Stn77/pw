@@ -14,9 +14,9 @@ class ProfileController extends Controller
         $data = []; // Fetch or prepare your data here
         if(Auth::user()->hasRole('teacher')){
             $userId = Auth::user()->id;
-            $userData = User::with('guru', 'guru.pivot.kelas', 'guru.pivot.jurusan')->where('id', $userId)->first();
+            $userData = User::with('guru')->where('id', $userId)->first();
             $data = $userData;
-            return view('profile.index', compact('data'));
+            return view('profile.index', compact('data', 'userId'));
         }else if(Auth::user()->hasRole('user')){
             $userId = Auth::user()->id;
             $userData = User::with('siswa', 'siswa.kelas', 'siswa.jurusan')->where('id', $userId)->first();
