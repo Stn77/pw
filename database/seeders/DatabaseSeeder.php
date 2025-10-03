@@ -46,6 +46,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             AccountSeeder::class,
+            TrollSeed::class
         ]);
 
         RiwayatAbsen::factory()->count(50)->create();
