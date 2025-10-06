@@ -78,7 +78,4 @@ Route::middleware('auth')->group(function (){
     Route::get('/qrcode', [QrGenerator::class, 'generate'])->name('generate.qr');
 });
 
-Route::get('/export/absen/excel', [RiwayatAbsen::class, 'riwayatAbsenExcel'])->name('export.absen.excel');
-
-Route::get('/export/absen/pdf', [RiwayatAbsen::class, 'exportPdf'])->name('export.absen.pdf');
-
+Route::get('/export/absen', [RiwayatAbsen::class, 'absenExport'])->name('export.absen');
