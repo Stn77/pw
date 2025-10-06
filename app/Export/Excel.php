@@ -10,7 +10,7 @@ use PhpOffice\PhpSpreadsheet\Style\Fill;
 
 class Excel
 {
-    public static function riwayatAbsen($data)
+    public static function riwayatAbsen($data, $fileName)
     {
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
@@ -61,7 +61,6 @@ class Excel
             $sheet->getColumnDimension($col)->setAutoSize(true);
         }
 
-        $fileName = 'riwayat_absen_' . now()->format('Ymd_His') . '.xlsx';
         $writer = new Xlsx($spreadsheet);
         $filePath = storage_path("app/public/{$fileName}");
         $writer->save($filePath);

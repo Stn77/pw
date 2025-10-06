@@ -13,35 +13,30 @@
                 @hasanyrole('admin')
                 <div class="jurusan-f me-2 form-group">
                     {{-- <label for="kelas" class="mb-0 form-label">Kelas</label> --}}
-                    <select class="form-select form-select-sm me-2" name="kelas" id="kelas" aria-placeholder="konz">
+                    <select class="form-select form-select-sm me-2" name="kelas" id="kelasFilter" aria-placeholder="konz">
                         <option value="">kelas</option>
-                        <option value="x">X</option>
-                        <option value="xi">XI</option>
-                        <option value="xii">XII</option>
+                        <option value="1">X</option>
+                        <option value="2">XI</option>
+                        <option value="3">XII</option>
                     </select>
                 </div>
                 <div class="kelas-f me-2 form-group">
                     {{-- <label for="jurusan" class="mb-0 form-label">Jurusan</label> --}}
-                    <select class="form-select form-select-sm me-2" name="jurusan" id="jurusan">
+                    <select class="form-select form-select-sm me-2" name="jurusan" id="jurusanFilter">
                         <option value="">Jurusan</option>
-                        <option value="pplg">PPLG</option>
-                        <option value="tsm">TSM</option>
-                        <option value="dkv">DKV</option>
-                        <option value="mp">mp</option>
-                        <option value="ak">ak</option>
-                        <option value="bd">bd</option>
-                        <option value="tkkr">tkkr</option>
+                        <option value="1">MP</option>
+                        <option value="2">AK</option>
+                        <option value="3">BD</option>
+                        <option value="4">TSM</option>
+                        <option value="5">DKV</option>
+                        <option value="6">PPLG</option>
+                        <option value="7">tkkr</option>
                     </select>
                 </div>
                 <div class="action">
                     <button class="btn btn-success btn-sm" id="filter">Filter</button>
                     <button class="btn btn-danger btn-sm" id="reset">Reset</button>
                     <button class="btn btn-primary btn-sm" id="export" data-bs-toggle="modal" data-bs-target="#exportmodaladmin">Export</button>
-                </div>
-                @endhasanyrole
-                @hasanyrole('guru')
-                <div class="action">
-                    <button class="btn btn-primary btn-sm" id="export" data-bs-toggle="modal" data-bs-target="#exportmodal">Export</button>
                 </div>
                 @endhasanyrole
             </div>
@@ -61,61 +56,33 @@
                     <h5 class="modal-title" id="modalTitle">Opsi Export</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="mb-3 form-group">
-                        <label for="file" class="form-label">Format File</label>
-                        <select class="form-select" name="file" id="file">
-                            <option value="x" selected disabled>Pilih Format File</option>
-                            <option value="excel">Excel</option>
-                            <option value="pdf">Pdf</option>
-                        </select>
+                <form id="export-absen" action="{{route('export.absen')}}" method="GET" target="_blank">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="mb-3 form-group">
+                            <label for="file" class="form-label">Format File</label>
+                            <select class="form-select" name="file" id="file" required>
+                                <option value="" selected disabled>Pilih Format File</option>
+                                <option value="excel">Excel</option>
+                                <option value="pdf">PDF</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 form-group">
+                            <label for="tanggal-awal" class="form-label">Tanggal Awal</label>
+                            <input class="form-control" name="tanggal-awal" id="tanggal-awal" type="date"
+                                max="{{now()->toDateString()}}" required>
+                        </div>
+                        <div class="mb-3 form-group">
+                            <label for="tanggal-akhir" class="form-label">Tanggal Akhir</label>
+                            <input class="form-control" name="tanggal-akhir" id="tanggal-akhir" type="date"
+                                max="{{now()->toDateString()}}" required>
+                        </div>
                     </div>
-                    <div class="mb-3 form-group">
-                        <label for="tanggal-awal" class="form-label">Tanggal Awal</label>
-                        <input class="form-control" name="tanggal-awal" id="tanggal-awal" type="date" max="{{now()->toDateString()}}">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Export</button>
                     </div>
-                    <div class="mb-3 form-group">
-                        <label for="tanggal-akhir" class="form-label">Tanggal Akhir</label>
-                        <input class="form-control" name="tanggal-akhir" id="tanggal-awal" type="date" max="{{now()->toDateString()}}">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="exportmodal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitle">Opsi Export</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3 form-group">
-                        <label for="file" class="form-label">Format File</label>
-                        <select class="form-select" name="file" id="file">
-                            <option value="x" selected disabled>Pilih Format File</option>
-                            <option value="excel">Excel</option>
-                            <option value="pdf">Pdf</option>
-                        </select>
-                    </div>
-                    <div class="mb-3 form-group">
-                        <label for="tanggal-awal" class="form-label">Tanggal Awal</label>
-                        <input class="form-control" name="tanggal-awal" id="tanggal-awal" type="date" max="{{now()->toDateString()}}">
-                    </div>
-                    <div class="mb-3 form-group">
-                        <label for="tanggal-akhir" class="form-label">Tanggal Akhir</label>
-                        <input class="form-control" name="tanggal-akhir" id="tanggal-awal" type="date" max="{{now()->toDateString()}}">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -129,13 +96,16 @@
             autoFill: false,
             ajax: {
                 url: '{{ route('data.absen.get') }}',
+                data: function(d){
+                    d.kelas = $('#kelasFilter').val()
+                    d.jurusan = $('#jurusanFilter').val()
+                },
             },
             columns: [
                 {
                     data: 'DT_RowIndex',
                     title: 'No',
                     orderable: false,
-                    searchable: false
                 },
                 { data: 'nisn', title: 'NISN' },
                 { data: 'nama', title: 'Nama Siswa' },
@@ -147,24 +117,16 @@
                 { data: 'action', title: 'Ket', orderable: false, searchable: false },
             ]
         });
+
+        $('#filter').on('keyup click', function() {
+            absenSiswaTable.draw()
+        })
+
+        $('#reset').on('keyup click', function() {
+            absenSiswaTable.draw()
+        })
+
     });
-
-$('#exportmodaladmin .btn-primary').on('click', function () {
-    let format = $('#file').val();
-    let awal = $('#tanggal-awal').val();
-    let akhir = $('#tanggal-akhir').val();
-
-    if (!format || format === 'x') {
-        alert("Pilih format file dulu!");
-        return;
-    }
-
-    if (format === 'excel') {
-        window.location.href = "{{ route('export.absen.excel') }}" + "?tanggal_awal=" + awal + "&tanggal_akhir=" + akhir;
-    } else if (format === 'pdf') {
-        window.location.href = "{{ route('export.absen.pdf') }}" + "?tanggal_awal=" + awal + "&tanggal_akhir=" + akhir;
-    }
-});
 
 </script>
 
