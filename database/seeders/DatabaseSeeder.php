@@ -16,9 +16,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
-            UserSeeder::class,
-        ]);
 
         $jurusan = [
             'mp',
@@ -45,10 +42,9 @@ class DatabaseSeeder extends Seeder
         }
 
         $this->call([
+            UserSeeder::class,
             AccountSeeder::class,
             TrollSeed::class
         ]);
-
-        RiwayatAbsen::factory()->count(50)->create();
     }
 }

@@ -15,7 +15,7 @@ class AccountSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)->user()->has(Siswa::factory())->create();
+        User::factory(50)->user()->has(Siswa::factory())->create();
         User::factory(5)->teacher()->withEmail()->has(Guru::factory())->create();
     }
 }

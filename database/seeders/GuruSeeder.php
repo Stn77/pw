@@ -25,5 +25,19 @@ class GuruSeeder extends Seeder
             'name' => 'Guru xpplg',
             'nip' => '1234567890'
         ]);
+
+        $data = Guru::find(1);
+
+        $kelasIds = [1, 2, 3];
+        $jurusanIds = [1, 2, 3, 4, 5, 6, 7];
+
+        foreach ($kelasIds as $kelasId) {
+            foreach ($jurusanIds as $jurusanId) {
+                $data->pivot()->create([
+                    'kelas_id' => $kelasId,
+                    'jurusan_id' => $jurusanId,
+                ]);
+            }
+        }
     }
 }

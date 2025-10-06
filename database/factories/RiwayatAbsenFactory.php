@@ -17,11 +17,12 @@ class RiwayatAbsenFactory extends Factory
      */
     public function definition(): array
     {
+        $tanggal = fake()->dateTimeBetween('2025-9-30', '2025-10-3');
         Carbon::setLocale('id');
         return [
-            'user_id' => fake()->numberBetween(3, 13),
-            'tanggal' => fake()->date(),
-            'hari' => fake()->date(),
+            'user_id' => fake()->numberBetween(3, 53),
+            'tanggal' => $tanggal,
+            'hari' => $tanggal,
             'is_late' => fake()->randomElement(['Terlambat', 'Tepat Waktu']),
         ];
     }
