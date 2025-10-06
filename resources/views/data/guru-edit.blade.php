@@ -125,7 +125,7 @@
                         <div class="row mb-3 p-2 border rounded">
                             <label for="" class="form-label">Tambah Kelas Diajar Baru</label>
                             <div class="form-group col-md-5">
-                                <select id="kelas_select" class="form-control" required>
+                                <select id="kelas_select" class="form-control">
                                     <option value="">-- Pilih Kelas --</option>
                                     <option value="1">X</option>
                                     <option value="2">XI</option>
@@ -133,16 +133,16 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-5">
-                                <select id="jurusan_select" class="form-control" required>
+                                <select id="jurusan_select" class="form-control">
                                     <option value="">-- Pilih Jurusan --</option>
-                                    <option value="" selected disabled>Pilih Jurusan</option>
-                                    <option value="1">MP</option>
-                                    <option value="2">AK</option>
-                                    <option value="3">BD</option>
-                                    <option value="4">TSM</option>
-                                    <option value="5">DKV</option>
-                                    <option value="6">PPLG</option>
-                                    <option value="7">TKKR</option>
+                                        <option value="" selected disabled>Pilih Jurusan</option>
+                                        <option value="1">MP</option>
+                                        <option value="2">AK</option>
+                                        <option value="3">BD</option>
+                                        <option value="4">TSM</option>
+                                        <option value="5">DKV</option>
+                                        <option value="6">PPLG</option>
+                                        <option value="7">TKKR</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-2">
@@ -158,10 +158,23 @@
                             </div>
                         </div>
 
+                        <!-- Tombol untuk mengirim data -->
                         <div class="row mb-3">
+                        </div>
+
+                        <div class="col">
                             <div class="col">
-                                <button type="button" class="btn btn-primary" id="submitKelas">Simpan Perubahan Kelas</button>
                             </div>
+                            <button type="button" class="btn btn-primary" id="submitKelas">Simpan Perubahan Kelas</button>
+                            <button type="submit" class="btn btn-primary" id="submitBtn">
+                                <span id="submitText">Simpan</span>
+                                <span id="loadingSpinner" class="loading">
+                                    <i class="bi bi-arrow-repeat"></i> Mengupload...
+                                </span>
+                            </button>
+                            {{-- <button type="reset" class="btn btn-warning" id="resetBtn">
+                                Reset
+                            </button> --}}
                         </div>
                     </div>
                 </div>
