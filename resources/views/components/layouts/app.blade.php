@@ -290,6 +290,7 @@
                             $dataGuru = Route::is('data.guru.index', 'data.guru.edit')
                         @endphp
 
+                        @hasanyrole('admin|teacher')
                         <li>
                             <button class="rounded btn btn-toggle align-items-center collapsed w-100 text-start {{$dataPage || $dataGuru ? 'bg-active' : ''}}"
                             data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="{{$dataPage || $dataGuru ? 'true' : 'false'}}">
@@ -307,6 +308,7 @@
                                 </ul>
                             </div>
                         </li>
+                        @endhasanyrole
 
                         <li class="my-3 border-top"></li>
 
