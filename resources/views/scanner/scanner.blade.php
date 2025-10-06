@@ -108,6 +108,8 @@
                         }else if  (data.status === 400){
                             // notifikasi sudah absen
                             showNotification('Anda sudah melakukan absensi hari ini', 'info');
+                        }else if (data.status === 401) {
+                            showNotification('Anda bukan Siswa', 'warning')
                         }else{
                             // error
                             showNotification('Terjadi kesalahan: ' + (data.message || 'Unknown error'), 'error');

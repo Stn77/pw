@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Scanner;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -31,7 +32,17 @@ class Scanner extends Controller
                 $status = 201;
             }
 
-            $absenHistory = [];
+            $siswa = User::with('siswa')->find((int) $data['decodedText']);
+
+            if (!$siswa) {
+                return response()->json([
+                    'data' => $data,
+                    'status' => 401,
+                    'waktu' => date('H:i:s'),
+                    'messageTest' => 'Absen Gagal, Kamu bukan siswa' ,
+                    'mainMessage' => 'Absen Gagal ' . $isLate,
+                ]);
+            }
 
             $isAbsen = \App\Models\RiwayatAbsen::where('user_id', (int) $data['decodedText'])
                 ->where('tanggal', date('Y-m-d'))
