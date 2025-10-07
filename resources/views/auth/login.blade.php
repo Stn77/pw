@@ -3,7 +3,7 @@
         <!-- Left Section (Form) -->
         <div class="px-5 bg-white col-md-6 d-flex flex-column justify-content-center ">
             <h2 class="mb-2 fw-bold">Login</h2>
-            <p class="mb-4 text-muted">Selamat datang di Prima Pay. Login untuk mengakses fitur Prima Score</p>
+            <p class="mb-4 text-muted">Selamat datang di Prima Score. Login untuk mengakses fitur Prima Score</p>
             <hr>
 
             <form method="POST" action="{{ route('login.post') }}">

@@ -8,9 +8,7 @@ use App\Http\Controllers\Scanner\{Scanner};
 use App\Http\Controllers\TestAlgorithm;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [AuthController::class ,'showLoginForm']);
 
 Route::get('/test', [TestAlgorithm::class, 'index'])->name('test.algorithm');
 Route::get('/test-view', function () {

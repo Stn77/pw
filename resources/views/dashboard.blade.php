@@ -86,7 +86,7 @@
             <div class="d-flex flex-column">
                 <p class="h4 welcome-admin" style="color: #1E293B;">Selamat Datang di Dashboard Admin</p>
                 <div class="f-c">
-                    <a class="data data-1 h6 count"><p>Jumlah Siswa Absen</p> <span></span></a>
+                    <a class="data data-1 h6 count"><p>Jumlah Siswa Absen</p> <span>{{$riwayatAbsen}}</span></a>
                     <a class="data data-2 h6 late"><p>Terlambat</p> <span>{{$absenTelat}}</span></a>
                     <a class="data data-3 h6 perfect"><p>Tepat Waktu</p> <span>{{$absenTepatWaktu}}</span></a>
                 </div>

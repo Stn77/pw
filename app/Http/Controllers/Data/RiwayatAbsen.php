@@ -118,11 +118,68 @@ class RiwayatAbsen extends Controller
             $tanggalAkhir = $request->input('tanggal-akhir');
             $fileType = $request->input('file');
 
-            // Query data berdasarkan tanggal
-            $data = ModelsRiwayatAbsen::whereBetween('tanggal', [
-                Carbon::parse($tanggalAwal)->startOfDay(),
-                Carbon::parse($tanggalAkhir)->endOfDay()
-            ])->get();
+            if (Auth::user()->guru) {
+                // Anggap ini adalah guru yang sedang aktif
+                $guruId = Auth::user()->guru->id;
+
+                // Dapatkan ID Kelas dan Jurusan yang diajar oleh guru
+                $teacherClasses = GuruPivot::where('guru_id', $guruId)
+                    ->select('kelas_id', 'jurusan_id')
+                    ->get();
+
+                // Jika tidak ada data
+                if ($teacherClasses->isEmpty()) {
+                    return collect([]); // Kembalikan koleksi kosong
+                }
+
+                // **Cara 1: Menggunakan Where Clause Kompleks (Lebih bersih jika banyak kombinasi)**
+                $siswaQuery = Siswa::query();
+
+                if (!$request->kelas || !$request->jurusan) {
+                    // Buat clause OR untuk setiap kombinasi kelas dan jurusan
+                    $siswaQuery->where(function ($query) use ($teacherClasses) {
+                        foreach ($teacherClasses as $combination) {
+                            $query->orWhere(function ($q) use ($combination) {
+                                $q->where('kelas_id', $combination->kelas_id)
+                                    ->where('jurusan_id', $combination->jurusan_id);
+                            });
+                        }
+                    });
+                }
+
+                if ($request->kelas) {
+                    $siswaQuery->where('kelas_id', $request->kelas);
+                }
+
+                if ($request->jurusan) {
+                    $siswaQuery->where('jurusan_id', $request->jurusan);
+                }
+
+                $targetUserIds = $siswaQuery->pluck('user_id')->unique();
+
+                // Ambil Riwayat Absen
+                $data = ModelsRiwayatAbsen::whereIn('user_id', $targetUserIds)
+                    ->latest()
+                    ->with('user')
+                    ->get();
+            } else {
+                $siswaQuery = Siswa::query();
+
+                if ($request->kelas) {
+                    $siswaQuery->where('kelas_id', $request->kelas);
+                }
+
+                if ($request->jurusan) {
+                    $siswaQuery->where('jurusan_id', $request->jurusan);
+                }
+
+                $targetUserIds = $siswaQuery->pluck('user_id')->unique();
+
+                $data = ModelsRiwayatAbsen::whereIn('user_id', $targetUserIds)
+                    ->latest()
+                    ->with('user')
+                    ->get();
+            }
 
             // Validasi jika data kosong
             if ($data->isEmpty()) {

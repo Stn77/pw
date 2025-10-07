@@ -10,6 +10,7 @@
     <div class="d-flex flex-column">
         <div class="mb-4 d-flex">
             <div class="flex-row filter d-flex form-group">
+                @hasanyrole('admin|teacher')
                 @hasanyrole('admin')
                 <div class="jurusan-f me-2 form-group">
                     {{-- <label for="kelas" class="mb-0 form-label">Kelas</label> --}}
@@ -33,10 +34,15 @@
                         <option value="7">tkkr</option>
                     </select>
                 </div>
+                @endhasanyrole
                 <div class="action">
+                    @hasanyrole('admin')
                     <button class="btn btn-success btn-sm" id="filter">Filter</button>
                     <button class="btn btn-danger btn-sm" id="reset">Reset</button>
+                    @endhasanyrole
+                    @hasanyrole('teacher|admin')
                     <button class="btn btn-primary btn-sm" id="export" data-bs-toggle="modal" data-bs-target="#exportmodaladmin">Export</button>
+                    @endhasanyrole
                 </div>
                 @endhasanyrole
             </div>

@@ -11,10 +11,10 @@ class HomeDashboard extends Controller
 {
     //
     public function index(){
-        $riwayatAbsen = RiwayatAbsen::whereDate('created_at', date('Y-m-d'));
-        $absenTelat = $riwayatAbsen->where('is_late', 'terlambat')->count();
-        $absenTepatWaktu = $riwayatAbsen->where('is_late', 'tepat waktu')->count();
-        $riwayatAbsen = $riwayatAbsen->count();
+        $absenTelat = RiwayatAbsen::whereDate('created_at', date('Y-m-d'))->where('is_late', 'Terlambat')->count();
+        $absenTepatWaktu = RiwayatAbsen::whereDate('created_at', date('Y-m-d'))->where('is_late', 'Tepat Waktu')->count();
+        // dd($absenTepatWaktu);
+        $riwayatAbsen = RiwayatAbsen::whereDate('created_at', date('Y-m-d'))->count();
         return view('dashboard', compact('absenTelat', 'absenTepatWaktu', 'riwayatAbsen'));
     }
 }

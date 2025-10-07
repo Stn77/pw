@@ -84,7 +84,7 @@
 
         function onScanSuccess(decodedText, decodedResult) {
             try{
-                setTimeout(() => {
+                // setTimeout(() => {
                     fetch('{{route('scanner.scan')}}', {
                         method: 'POST',
                         headers: {
@@ -118,7 +118,7 @@
                     .catch(error => {
                         showNotification('Terjadi kesalahan jaringan: ' + error, 'error');
                     });
-                },1000);
+                // },1000);
             } catch (error) {
                 showNotification('Terjadi kesalahan: ' + error, 'error');
             }
